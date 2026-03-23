@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Hillary3000-web/Root-Access-Hackathon#readme",
   "dependencies": {
+    "@supabase/supabase-js": "^2.100.0",
     "axios": "^1.13.6",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",

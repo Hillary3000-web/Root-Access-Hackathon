@@ -25,3 +25,6 @@ app.use("/checkout", checkoutRoutes);
 
 const authRoutes = require("./routes/auth");
 app.use("/auth", authRoutes);
+
+const transactionRoutes = require('./routes/transactions');
+app.use('/transactions', transactionRoutes);

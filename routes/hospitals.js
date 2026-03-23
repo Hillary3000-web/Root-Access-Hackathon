@@ -1,67 +1,45 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-
-// Mock hospital data for demo
-const hospitals = [
-  {
-    id: 1,
-    name: "Lagos University Teaching Hospital",
-    location: "Lagos",
-    specialties: ["General", "Surgery", "Cardiology"],
-  },
-  {
-    id: 2,
-    name: "University College Hospital",
-    location: "Ibadan",
-    specialties: ["General", "Neurology", "Oncology"],
-  },
-  {
-    id: 3,
-    name: "National Hospital Abuja",
-    location: "Abuja",
-    specialties: ["General", "Orthopedics", "Pediatrics"],
-  },
-  {
-    id: 4,
-    name: "Lagos Island General Hospital",
-    location: "Lagos",
-    specialties: ["General", "Emergency"],
-  },
-  {
-    id: 5,
-    name: "Aminu Kano Teaching Hospital",
-    location: "Kano",
-    specialties: ["General", "Surgery"],
-  },
-];
+const supabase = require('../db/supabase');
 
 // Get all hospitals
-router.get("/", (req, res) => {
-  const { location, search } = req.query;
-  let results = hospitals;
+router.get('/', async (req, res) => {
+  try {
+    const { location, search } = req.query;
+    let query = supabase.from('hospitals').select('*');
 
-  if (location) {
-    results = results.filter(
-      (h) => h.location.toLowerCase() === location.toLowerCase()
-    );
-  }
-  if (search) {
-    results = results.filter((h) =>
-      h.name.toLowerCase().includes(search.toLowerCase())
-    );
-  }
+    if (location) {
+      query = query.ilike('location', location);
+    }
+    if (search) {
+      query = query.ilike('name', `%${search}%`);
+    }
 
-  res.json({ success: true, data: results });
+    const { data, error } = await query;
+    if (error) throw error;
+
+    res.json({ success: true, data });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 });
 
 // Get single hospital
-router.get("/:id", (req, res) => {
-  const hospital = hospitals.find((h) => h.id === parseInt(req.params.id));
-  if (!hospital)
-    return res
-      .status(404)
-      .json({ success: false, message: "Hospital not found" });
-  res.json({ success: true, data: hospital });
+router.get('/:id', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('hospitals')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
+
+    if (error) throw error;
+    if (!data) return res.status(404).json({ success: false, message: 'Hospital not found' });
+
+    res.json({ success: true, data });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 });
 
 module.exports = router;
