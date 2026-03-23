@@ -19,3 +19,6 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 const hospitalRoutes = require('./routes/hospitals');
 app.use('/hospitals', hospitalRoutes);
+
+const checkoutRoutes = require('./routes/checkout');
+app.use('/checkout', checkoutRoutes);
