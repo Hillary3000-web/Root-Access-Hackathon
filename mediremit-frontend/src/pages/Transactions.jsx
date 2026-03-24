@@ -6,21 +6,21 @@ const API = 'https://mediremit-backend.onrender.com'
 
 const statusConfig = {
   successful: {
-    color: '#38a169',
-    bg: 'rgba(56, 161, 105, 0.1)',
-    border: 'rgba(56, 161, 105, 0.2)',
+    color: '#00d084',
+    bg: 'rgba(0, 208, 132, 0.1)',
+    border: 'rgba(0, 208, 132, 0.2)',
     icon: '✅',
     label: 'Successful',
   },
   failed: {
-    color: '#e53e3e',
+    color: '#fc8181',
     bg: 'rgba(229, 62, 62, 0.1)',
     border: 'rgba(229, 62, 62, 0.2)',
     icon: '❌',
     label: 'Failed',
   },
   pending: {
-    color: '#d69e2e',
+    color: '#f6ad55',
     bg: 'rgba(214, 158, 46, 0.1)',
     border: 'rgba(214, 158, 46, 0.2)',
     icon: '⏳',
@@ -31,17 +31,18 @@ const statusConfig = {
 const styles = {
   page: {
     minHeight: '100vh',
-    background: '#f0f4f8',
+    background: '#0a0f1e',
   },
   /* ---- Navbar ---- */
   navbar: {
-    background: 'linear-gradient(135deg, #1a365d 0%, #0f2240 100%)',
+    background: '#0d1117',
     padding: '0 2rem',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     height: '68px',
-    boxShadow: '0 2px 20px rgba(0, 0, 0, 0.15)',
+    boxShadow: 'none',
+    borderBottom: '1px solid rgba(255,255,255,0.1)',
     position: 'sticky',
     top: 0,
     zIndex: 100,
@@ -55,11 +56,11 @@ const styles = {
     width: '34px',
     height: '34px',
     borderRadius: '10px',
-    background: 'linear-gradient(135deg, #2b6cb0, #63b3ed)',
+    background: 'rgba(0, 208, 132, 0.15)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'white',
+    color: '#00d084',
     fontSize: '1rem',
     fontWeight: 800,
   },
@@ -71,7 +72,7 @@ const styles = {
     letterSpacing: '-0.3px',
   },
   navBtn: {
-    background: 'rgba(255, 255, 255, 0.1)',
+    background: 'transparent',
     backdropFilter: 'blur(10px)',
     color: 'white',
     border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -102,14 +103,14 @@ const styles = {
     gap: '1rem',
   },
   title: {
-    color: '#1a365d',
+    color: '#ffffff',
     marginBottom: '0.3rem',
     fontSize: '1.8rem',
     fontWeight: 700,
     letterSpacing: '-0.5px',
   },
   desc: {
-    color: '#718096',
+    color: 'rgba(255, 255, 255, 0.6)',
     fontSize: '0.95rem',
     margin: 0,
   },
@@ -126,6 +127,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '0.3rem',
+    border: '1px solid rgba(255,255,255,0.05)',
   },
   /* ---- Transaction Card ---- */
   txList: {
@@ -134,15 +136,15 @@ const styles = {
     gap: '0.85rem',
   },
   txCard: {
-    background: 'white',
+    background: 'rgba(255, 255, 255, 0.05)',
+    backdropFilter: 'blur(20px)',
     borderRadius: '14px',
     padding: '1.3rem 1.5rem',
-    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.05)',
-    border: '1px solid rgba(226, 232, 240, 0.6)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+    transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
     gap: '1rem',
     flexWrap: 'wrap',
   },
@@ -157,7 +159,8 @@ const styles = {
     width: '44px',
     height: '44px',
     borderRadius: '12px',
-    background: 'linear-gradient(135deg, #ebf8ff, #bee3f8)',
+    background: 'rgba(0, 208, 132, 0.1)',
+    color: '#00d084',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -166,17 +169,17 @@ const styles = {
   },
   txHospital: {
     fontWeight: 600,
-    color: '#1a365d',
+    color: '#ffffff',
     margin: '0 0 0.15rem',
     fontSize: '0.95rem',
   },
   txPatient: {
-    color: '#718096',
+    color: 'rgba(255, 255, 255, 0.6)',
     margin: '0 0 0.15rem',
     fontSize: '0.85rem',
   },
   txDate: {
-    color: '#a0aec0',
+    color: 'rgba(255, 255, 255, 0.4)',
     margin: 0,
     fontSize: '0.8rem',
   },
@@ -186,7 +189,7 @@ const styles = {
   },
   txAmount: {
     fontWeight: 700,
-    color: '#1a365d',
+    color: '#ffffff',
     margin: '0 0 0.5rem',
     fontSize: '1.15rem',
     letterSpacing: '-0.3px',
@@ -213,50 +216,50 @@ const styles = {
   spinner: {
     width: '40px',
     height: '40px',
-    border: '3px solid #e2e8f0',
-    borderTopColor: '#2b6cb0',
+    border: '3px solid rgba(255, 255, 255, 0.1)',
+    borderTopColor: '#00d084',
     borderRadius: '50%',
     animation: 'spin 0.8s linear infinite',
   },
   loadingText: {
-    color: '#718096',
+    color: 'rgba(255, 255, 255, 0.6)',
     fontSize: '0.95rem',
   },
   /* ---- Empty State ---- */
   emptyState: {
     textAlign: 'center',
     padding: '4rem 2rem',
-    background: 'white',
+    background: 'rgba(255, 255, 255, 0.05)',
+    backdropFilter: 'blur(20px)',
     borderRadius: '16px',
-    boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
-    border: '1px solid rgba(226, 232, 240, 0.6)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
   },
   emptyIcon: {
     fontSize: '3.5rem',
     marginBottom: '1rem',
   },
   emptyTitle: {
-    color: '#1a365d',
+    color: '#ffffff',
     fontWeight: 600,
     fontSize: '1.15rem',
     marginBottom: '0.5rem',
   },
   emptyText: {
-    color: '#718096',
+    color: 'rgba(255, 255, 255, 0.6)',
     fontSize: '0.95rem',
     marginBottom: '1.5rem',
   },
   emptyBtn: {
     padding: '0.7rem 1.8rem',
-    background: 'linear-gradient(135deg, #2b6cb0, #1a365d)',
-    color: 'white',
+    background: '#00d084',
+    color: '#0a0f1e',
     border: 'none',
     borderRadius: '12px',
     cursor: 'pointer',
     fontSize: '0.9rem',
-    fontWeight: 600,
+    fontWeight: 700,
     fontFamily: "'Inter', sans-serif",
-    boxShadow: '0 2px 10px rgba(43, 108, 176, 0.3)',
+    boxShadow: '0 2px 10px rgba(0, 208, 132, 0.2)',
     transition: 'transform 0.2s ease, box-shadow 0.2s ease',
   },
 }
@@ -312,11 +315,11 @@ export default function Transactions() {
           onClick={() => navigate('/hospitals')}
           style={styles.navBtn}
           onMouseEnter={e => {
-            e.target.style.background = 'rgba(255,255,255,0.2)'
+            e.target.style.background = 'rgba(255,255,255,0.05)'
             e.target.style.transform = 'translateY(-1px)'
           }}
           onMouseLeave={e => {
-            e.target.style.background = 'rgba(255,255,255,0.1)'
+            e.target.style.background = 'transparent'
             e.target.style.transform = 'translateY(0)'
           }}
         >
@@ -334,16 +337,16 @@ export default function Transactions() {
             <div style={styles.statsRow}>
               <div className="responsive-stat-badge" style={{
                 ...styles.statBadge,
-                background: 'rgba(43, 108, 176, 0.1)',
-                color: '#2b6cb0',
+                background: 'rgba(255, 255, 255, 0.05)',
+                color: '#ffffff',
               }}>
                 📊 {transactions.length} {transactions.length === 1 ? 'payment' : 'payments'}
               </div>
               {totalPaid > 0 && (
                 <div className="responsive-stat-badge" style={{
                   ...styles.statBadge,
-                  background: 'rgba(56, 161, 105, 0.1)',
-                  color: '#38a169',
+                  background: 'rgba(0, 208, 132, 0.1)',
+                  color: '#00d084',
                 }}>
                   💰 ₦{totalPaid.toLocaleString()} paid
                 </div>
@@ -369,11 +372,11 @@ export default function Transactions() {
               style={styles.emptyBtn}
               onMouseEnter={e => {
                 e.target.style.transform = 'translateY(-1px)'
-                e.target.style.boxShadow = '0 4px 14px rgba(43, 108, 176, 0.4)'
+                e.target.style.boxShadow = '0 4px 14px rgba(0, 208, 132, 0.3)'
               }}
               onMouseLeave={e => {
                 e.target.style.transform = 'translateY(0)'
-                e.target.style.boxShadow = '0 2px 10px rgba(43, 108, 176, 0.3)'
+                e.target.style.boxShadow = '0 2px 10px rgba(0, 208, 132, 0.2)'
               }}
             >
               Make a Payment →
@@ -393,11 +396,13 @@ export default function Transactions() {
                   }}
                   onMouseEnter={e => {
                     e.currentTarget.style.transform = 'translateY(-2px)'
-                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.08)'
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.3)'
+                    e.currentTarget.style.borderColor = 'rgba(0, 208, 132, 0.5)'
                   }}
                   onMouseLeave={e => {
                     e.currentTarget.style.transform = 'translateY(0)'
-                    e.currentTarget.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.05)'
+                    e.currentTarget.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)'
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'
                   }}
                 >
                   <div style={styles.txLeft} className="responsive-tx-left">

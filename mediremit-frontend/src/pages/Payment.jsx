@@ -7,26 +7,27 @@ const API = 'https://mediremit-backend.onrender.com'
 const styles = {
   page: {
     minHeight: '100vh',
-    background: '#f0f4f8',
+    background: '#0a0f1e',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     padding: '2rem',
   },
   card: {
-    background: 'white',
+    background: 'rgba(255, 255, 255, 0.05)',
+    backdropFilter: 'blur(20px)',
     padding: '2.5rem',
     borderRadius: '20px',
     width: '100%',
     maxWidth: '500px',
-    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.08)',
-    border: '1px solid rgba(226, 232, 240, 0.6)',
+    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.5)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
     animation: 'fadeInUp 0.4s ease',
   },
   backBtn: {
     background: 'none',
     border: 'none',
-    color: '#2b6cb0',
+    color: '#00d084',
     cursor: 'pointer',
     marginBottom: '1.2rem',
     fontSize: '0.9rem',
@@ -39,18 +40,18 @@ const styles = {
     transition: 'color 0.2s ease',
   },
   title: {
-    color: '#1a365d',
+    color: '#ffffff',
     marginBottom: '1.5rem',
     fontSize: '1.5rem',
     fontWeight: 700,
     letterSpacing: '-0.3px',
   },
   hospitalBox: {
-    background: 'linear-gradient(135deg, #ebf8ff 0%, #e6f7ff 100%)',
+    background: 'rgba(255, 255, 255, 0.05)',
     padding: '1.2rem 1.4rem',
     borderRadius: '14px',
     marginBottom: '2rem',
-    border: '1px solid rgba(43, 108, 176, 0.12)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
     display: 'flex',
     alignItems: 'center',
     gap: '1rem',
@@ -59,7 +60,8 @@ const styles = {
     width: '48px',
     height: '48px',
     borderRadius: '12px',
-    background: 'linear-gradient(135deg, #2b6cb0, #1a365d)',
+    background: 'rgba(0, 208, 132, 0.15)',
+    color: '#00d084',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -68,23 +70,23 @@ const styles = {
   },
   hospitalName: {
     margin: 0,
-    color: '#1a365d',
+    color: '#ffffff',
     fontWeight: 700,
     fontSize: '1rem',
     lineHeight: 1.3,
   },
   hospitalLocation: {
     margin: '0.2rem 0 0',
-    color: '#4a5568',
+    color: 'rgba(255, 255, 255, 0.6)',
     fontSize: '0.85rem',
     display: 'flex',
     alignItems: 'center',
     gap: '0.25rem',
   },
   errorBox: {
-    background: 'rgba(229, 62, 62, 0.08)',
+    background: 'rgba(229, 62, 62, 0.1)',
     border: '1px solid rgba(229, 62, 62, 0.2)',
-    color: '#e53e3e',
+    color: '#fc8181',
     padding: '0.75rem 1rem',
     borderRadius: '10px',
     marginBottom: '1.2rem',
@@ -97,7 +99,7 @@ const styles = {
   label: {
     display: 'block',
     marginBottom: '0.4rem',
-    color: '#4a5568',
+    color: 'rgba(255, 255, 255, 0.8)',
     fontSize: '0.85rem',
     fontWeight: 500,
   },
@@ -111,29 +113,28 @@ const styles = {
     top: '50%',
     transform: 'translateY(-50%)',
     fontSize: '1rem',
-    color: '#a0aec0',
+    color: 'rgba(255, 255, 255, 0.4)',
     pointerEvents: 'none',
   },
   input: {
     width: '100%',
     padding: '0.85rem 0.85rem 0.85rem 2.6rem',
-    border: '2px solid #e2e8f0',
+    border: '1px solid rgba(255, 255, 255, 0.15)',
     borderRadius: '12px',
     fontSize: '0.95rem',
     fontFamily: "'Inter', sans-serif",
     boxSizing: 'border-box',
     transition: 'border-color 0.25s ease, box-shadow 0.25s ease',
     outline: 'none',
-    background: '#f7fafc',
-    color: '#2d3748',
+    background: '#1a2035',
+    color: '#ffffff',
   },
   inputFocus: {
-    borderColor: '#2b6cb0',
-    boxShadow: '0 0 0 3px rgba(43, 108, 176, 0.12)',
-    background: '#fff',
+    borderColor: '#00d084',
+    boxShadow: '0 0 0 3px rgba(0, 208, 132, 0.15)',
   },
   amountPreview: {
-    color: '#718096',
+    color: 'rgba(255, 255, 255, 0.6)',
     fontSize: '0.82rem',
     marginTop: '-0.8rem',
     marginBottom: '1.4rem',
@@ -142,8 +143,8 @@ const styles = {
   payButton: {
     width: '100%',
     padding: '0.95rem',
-    background: 'linear-gradient(135deg, #38a169, #2f855a)',
-    color: 'white',
+    background: '#00d084',
+    color: '#0a0f1e',
     border: 'none',
     borderRadius: '12px',
     fontSize: '1.05rem',
@@ -151,7 +152,7 @@ const styles = {
     fontFamily: "'Inter', sans-serif",
     cursor: 'pointer',
     transition: 'transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease',
-    boxShadow: '0 4px 15px rgba(56, 161, 105, 0.35)',
+    boxShadow: '0 4px 15px rgba(0, 208, 132, 0.2)',
     letterSpacing: '0.3px',
     display: 'flex',
     alignItems: 'center',
@@ -168,7 +169,7 @@ const styles = {
     justifyContent: 'center',
     gap: '0.4rem',
     marginTop: '1rem',
-    color: '#a0aec0',
+    color: 'rgba(255, 255, 255, 0.4)',
     fontSize: '0.8rem',
   },
 }
@@ -244,8 +245,8 @@ export default function Payment() {
         <button
           onClick={() => navigate('/hospitals')}
           style={styles.backBtn}
-          onMouseEnter={e => (e.target.style.color = '#1a365d')}
-          onMouseLeave={e => (e.target.style.color = '#2b6cb0')}
+          onMouseEnter={e => (e.target.style.color = '#00b975')}
+          onMouseLeave={e => (e.target.style.color = '#00d084')}
         >
           ← Back to hospitals
         </button>
@@ -308,7 +309,7 @@ export default function Payment() {
           </div>
           {form.amount && (
             <p style={styles.amountPreview}>
-              You will be charged <strong style={{ color: '#1a365d' }}>{formattedAmount}</strong>
+              You will be charged <strong style={{ color: '#00d084' }}>{formattedAmount}</strong>
             </p>
           )}
 
@@ -322,12 +323,12 @@ export default function Payment() {
             onMouseEnter={e => {
               if (!loading) {
                 e.currentTarget.style.transform = 'translateY(-1px)'
-                e.currentTarget.style.boxShadow = '0 6px 20px rgba(56, 161, 105, 0.45)'
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 208, 132, 0.25)'
               }
             }}
             onMouseLeave={e => {
               e.currentTarget.style.transform = 'translateY(0)'
-              e.currentTarget.style.boxShadow = '0 4px 15px rgba(56, 161, 105, 0.35)'
+              e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 208, 132, 0.2)'
             }}
           >
             {loading ? (

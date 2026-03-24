@@ -7,7 +7,7 @@ const API = 'https://mediremit-backend.onrender.com'
 const styles = {
   page: {
     minHeight: '100vh',
-    background: 'linear-gradient(135deg, #1a365d 0%, #2b6cb0 50%, #1a365d 100%)',
+    background: '#0a0f1e',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -18,19 +18,20 @@ const styles = {
   bgPattern: {
     position: 'absolute',
     inset: 0,
-    backgroundImage: `radial-gradient(circle at 20% 50%, rgba(255,255,255,0.06) 0%, transparent 50%),
-                       radial-gradient(circle at 80% 20%, rgba(255,255,255,0.04) 0%, transparent 50%),
-                       radial-gradient(circle at 50% 80%, rgba(255,255,255,0.03) 0%, transparent 50%)`,
+    backgroundImage: `radial-gradient(circle at 20% 50%, rgba(0, 208, 132, 0.05) 0%, transparent 50%),
+                       radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+                       radial-gradient(circle at 50% 80%, rgba(0, 208, 132, 0.03) 0%, transparent 50%)`,
     pointerEvents: 'none',
   },
   card: {
-    background: 'rgba(255, 255, 255, 0.97)',
+    background: 'rgba(255, 255, 255, 0.05)',
     backdropFilter: 'blur(20px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
     padding: '2.5rem',
     borderRadius: '20px',
     width: '100%',
     maxWidth: '420px',
-    boxShadow: '0 25px 60px rgba(0, 0, 0, 0.25)',
+    boxShadow: '0 25px 60px rgba(0, 0, 0, 0.5)',
     position: 'relative',
     zIndex: 1,
     animation: 'scaleIn 0.5s ease',
@@ -45,23 +46,23 @@ const styles = {
     width: '40px',
     height: '40px',
     borderRadius: '12px',
-    background: 'linear-gradient(135deg, #1a365d, #2b6cb0)',
+    background: 'rgba(0, 208, 132, 0.15)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'white',
+    color: '#00d084',
     fontSize: '1.2rem',
-    fontWeight: 700,
+    fontWeight: 800,
     flexShrink: 0,
   },
   logoText: {
     fontSize: '1.6rem',
-    fontWeight: 700,
-    color: '#1a365d',
+    fontWeight: 800,
+    color: '#ffffff',
     letterSpacing: '-0.5px',
   },
   subtitle: {
-    color: '#718096',
+    color: 'rgba(255, 255, 255, 0.6)',
     fontSize: '0.95rem',
     marginBottom: '2rem',
     marginTop: '0.5rem',
@@ -70,7 +71,7 @@ const styles = {
   label: {
     display: 'block',
     marginBottom: '0.4rem',
-    color: '#4a5568',
+    color: 'rgba(255, 255, 255, 0.8)',
     fontSize: '0.85rem',
     fontWeight: 500,
   },
@@ -84,31 +85,30 @@ const styles = {
     top: '50%',
     transform: 'translateY(-50%)',
     fontSize: '1rem',
-    color: '#a0aec0',
+    color: 'rgba(255, 255, 255, 0.4)',
     pointerEvents: 'none',
   },
   input: {
     width: '100%',
     padding: '0.85rem 0.85rem 0.85rem 2.6rem',
-    border: '2px solid #e2e8f0',
+    border: '1px solid rgba(255, 255, 255, 0.15)',
     borderRadius: '12px',
     fontSize: '0.95rem',
     fontFamily: "'Inter', sans-serif",
     boxSizing: 'border-box',
     transition: 'border-color 0.25s ease, box-shadow 0.25s ease',
     outline: 'none',
-    background: '#f7fafc',
-    color: '#2d3748',
+    background: '#1a2035',
+    color: '#ffffff',
   },
   inputFocus: {
-    borderColor: '#2b6cb0',
-    boxShadow: '0 0 0 3px rgba(43, 108, 176, 0.12)',
-    background: '#fff',
+    borderColor: '#00d084',
+    boxShadow: '0 0 0 3px rgba(0, 208, 132, 0.15)',
   },
   errorBox: {
-    background: 'rgba(229, 62, 62, 0.08)',
+    background: 'rgba(229, 62, 62, 0.1)',
     border: '1px solid rgba(229, 62, 62, 0.2)',
-    color: '#e53e3e',
+    color: '#fc8181',
     padding: '0.75rem 1rem',
     borderRadius: '10px',
     marginBottom: '1.2rem',
@@ -121,16 +121,16 @@ const styles = {
   button: {
     width: '100%',
     padding: '0.9rem',
-    background: 'linear-gradient(135deg, #2b6cb0, #1a365d)',
-    color: 'white',
+    background: '#00d084',
+    color: '#0a0f1e',
     border: 'none',
     borderRadius: '12px',
     fontSize: '1rem',
-    fontWeight: 600,
+    fontWeight: 700,
     fontFamily: "'Inter', sans-serif",
     cursor: 'pointer',
     transition: 'transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease',
-    boxShadow: '0 4px 15px rgba(43, 108, 176, 0.35)',
+    boxShadow: '0 4px 15px rgba(0, 208, 132, 0.2)',
     marginTop: '0.5rem',
     letterSpacing: '0.3px',
   },
@@ -141,11 +141,11 @@ const styles = {
   footer: {
     textAlign: 'center',
     marginTop: '1.5rem',
-    color: '#718096',
+    color: 'rgba(255, 255, 255, 0.6)',
     fontSize: '0.9rem',
   },
   link: {
-    color: '#2b6cb0',
+    color: '#00d084',
     textDecoration: 'none',
     fontWeight: 600,
     transition: 'color 0.2s ease',
@@ -155,13 +155,13 @@ const styles = {
     alignItems: 'center',
     gap: '1rem',
     margin: '1.5rem 0',
-    color: '#a0aec0',
+    color: 'rgba(255, 255, 255, 0.4)',
     fontSize: '0.8rem',
   },
   dividerLine: {
     flex: 1,
     height: '1px',
-    background: '#e2e8f0',
+    background: 'rgba(255, 255, 255, 0.1)',
   },
 }
 
@@ -252,12 +252,12 @@ export default function Login() {
             onMouseEnter={e => {
               if (!loading) {
                 e.target.style.transform = 'translateY(-1px)'
-                e.target.style.boxShadow = '0 6px 20px rgba(43, 108, 176, 0.45)'
+                e.target.style.boxShadow = '0 6px 20px rgba(0, 208, 132, 0.25)'
               }
             }}
             onMouseLeave={e => {
               e.target.style.transform = 'translateY(0)'
-              e.target.style.boxShadow = '0 4px 15px rgba(43, 108, 176, 0.35)'
+              e.target.style.boxShadow = '0 4px 15px rgba(0, 208, 132, 0.2)'
             }}
           >
             {loading ? '⏳ Signing in...' : 'Sign In'}

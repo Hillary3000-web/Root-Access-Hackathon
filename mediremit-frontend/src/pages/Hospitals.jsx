@@ -7,17 +7,18 @@ const API = 'https://mediremit-backend.onrender.com'
 const styles = {
   page: {
     minHeight: '100vh',
-    background: '#f0f4f8',
+    background: '#0a0f1e',
   },
   /* ---- Navbar ---- */
   navbar: {
-    background: 'linear-gradient(135deg, #1a365d 0%, #0f2240 100%)',
+    background: '#0d1117',
     padding: '0 2rem',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     height: '68px',
-    boxShadow: '0 2px 20px rgba(0, 0, 0, 0.15)',
+    boxShadow: 'none',
+    borderBottom: '1px solid rgba(255,255,255,0.1)',
     position: 'sticky',
     top: 0,
     zIndex: 100,
@@ -31,11 +32,11 @@ const styles = {
     width: '34px',
     height: '34px',
     borderRadius: '10px',
-    background: 'linear-gradient(135deg, #2b6cb0, #63b3ed)',
+    background: 'rgba(0, 208, 132, 0.15)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'white',
+    color: '#00d084',
     fontSize: '1rem',
     fontWeight: 800,
   },
@@ -52,13 +53,13 @@ const styles = {
     alignItems: 'center',
   },
   navGreeting: {
-    color: '#90cdf4',
+    color: 'rgba(255,255,255,0.6)',
     fontSize: '0.9rem',
     fontWeight: 500,
     marginRight: '0.5rem',
   },
   navBtn: {
-    background: 'rgba(255, 255, 255, 0.1)',
+    background: 'transparent',
     backdropFilter: 'blur(10px)',
     color: 'white',
     border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -71,8 +72,9 @@ const styles = {
     transition: 'all 0.2s ease',
   },
   navBtnLogout: {
-    background: 'rgba(229, 62, 62, 0.9)',
-    border: '1px solid rgba(229, 62, 62, 0.5)',
+    background: 'rgba(229, 62, 62, 0.1)',
+    border: '1px solid rgba(229, 62, 62, 0.2)',
+    color: '#fc8181',
   },
   /* ---- Content ---- */
   container: {
@@ -85,14 +87,14 @@ const styles = {
     marginBottom: '2rem',
   },
   title: {
-    color: '#1a365d',
+    color: '#ffffff',
     marginBottom: '0.3rem',
     fontSize: '1.8rem',
     fontWeight: 700,
     letterSpacing: '-0.5px',
   },
   desc: {
-    color: '#718096',
+    color: 'rgba(255, 255, 255, 0.6)',
     fontSize: '0.95rem',
     margin: 0,
   },
@@ -107,22 +109,21 @@ const styles = {
     top: '50%',
     transform: 'translateY(-50%)',
     fontSize: '1.1rem',
-    color: '#a0aec0',
+    color: 'rgba(255,255,255,0.4)',
     pointerEvents: 'none',
   },
   searchInput: {
     width: '100%',
     padding: '0.9rem 1rem 0.9rem 2.8rem',
-    border: '2px solid #e2e8f0',
+    border: '1px solid rgba(255, 255, 255, 0.15)',
     borderRadius: '14px',
     fontSize: '0.95rem',
     fontFamily: "'Inter', sans-serif",
     boxSizing: 'border-box',
-    background: 'white',
-    color: '#2d3748',
+    background: '#1a2035',
+    color: '#ffffff',
     outline: 'none',
     transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
-    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
   },
   /* ---- Grid ---- */
   grid: {
@@ -132,13 +133,13 @@ const styles = {
   },
   /* ---- Hospital Card ---- */
   card: {
-    background: 'white',
+    background: 'rgba(255, 255, 255, 0.05)',
+    backdropFilter: 'blur(20px)',
     borderRadius: '16px',
     padding: '1.5rem',
-    boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
-    transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+    transition: 'transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease',
     cursor: 'default',
-    border: '1px solid rgba(226, 232, 240, 0.6)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -147,7 +148,7 @@ const styles = {
     width: '42px',
     height: '42px',
     borderRadius: '12px',
-    background: 'linear-gradient(135deg, #ebf8ff, #bee3f8)',
+    background: 'rgba(0, 208, 132, 0.1)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -155,14 +156,14 @@ const styles = {
     marginBottom: '1rem',
   },
   cardName: {
-    color: '#1a365d',
+    color: '#ffffff',
     marginBottom: '0.4rem',
     fontSize: '1.05rem',
     fontWeight: 600,
     lineHeight: 1.3,
   },
   cardLocation: {
-    color: '#718096',
+    color: 'rgba(255, 255, 255, 0.6)',
     marginBottom: '1rem',
     fontSize: '0.88rem',
     display: 'flex',
@@ -180,27 +181,27 @@ const styles = {
     marginBottom: '1.2rem',
   },
   tag: {
-    background: 'linear-gradient(135deg, #ebf8ff, #e6f7ff)',
-    color: '#2b6cb0',
+    background: 'rgba(0, 208, 132, 0.15)',
+    color: '#00d084',
     padding: '0.25rem 0.75rem',
     borderRadius: '20px',
     fontSize: '0.78rem',
     fontWeight: 500,
-    border: '1px solid rgba(43, 108, 176, 0.1)',
+    border: '1px solid rgba(0, 208, 132, 0.2)',
   },
   payBtn: {
     width: '100%',
     padding: '0.7rem',
-    background: 'linear-gradient(135deg, #2b6cb0, #1a365d)',
-    color: 'white',
+    background: '#00d084',
+    color: '#0a0f1e',
     border: 'none',
     borderRadius: '10px',
     cursor: 'pointer',
     fontSize: '0.9rem',
-    fontWeight: 600,
+    fontWeight: 700,
     fontFamily: "'Inter', sans-serif",
     transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-    boxShadow: '0 2px 8px rgba(43, 108, 176, 0.3)',
+    boxShadow: '0 2px 8px rgba(0, 208, 132, 0.2)',
     letterSpacing: '0.2px',
   },
   /* ---- Loading ---- */
@@ -215,29 +216,29 @@ const styles = {
   spinner: {
     width: '40px',
     height: '40px',
-    border: '3px solid #e2e8f0',
-    borderTopColor: '#2b6cb0',
+    border: '3px solid rgba(255,255,255,0.1)',
+    borderTopColor: '#00d084',
     borderRadius: '50%',
     animation: 'spin 0.8s linear infinite',
   },
   loadingText: {
-    color: '#718096',
+    color: 'rgba(255, 255, 255, 0.6)',
     fontSize: '0.95rem',
   },
   /* ---- Empty State ---- */
   emptyState: {
     textAlign: 'center',
     padding: '4rem 2rem',
-    background: 'white',
+    background: 'rgba(255, 255, 255, 0.05)',
     borderRadius: '16px',
-    boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
   },
   emptyIcon: {
     fontSize: '3rem',
     marginBottom: '1rem',
   },
   emptyText: {
-    color: '#718096',
+    color: 'rgba(255, 255, 255, 0.6)',
     fontSize: '1rem',
   },
 }
@@ -298,11 +299,11 @@ export default function Hospitals() {
             style={styles.navBtn}
             className="responsive-nav-btn"
             onMouseEnter={e => {
-              e.target.style.background = 'rgba(255,255,255,0.2)'
+              e.target.style.background = 'rgba(255,255,255,0.05)'
               e.target.style.transform = 'translateY(-1px)'
             }}
             onMouseLeave={e => {
-              e.target.style.background = 'rgba(255,255,255,0.1)'
+              e.target.style.background = 'transparent'
               e.target.style.transform = 'translateY(0)'
             }}
           >
@@ -313,11 +314,11 @@ export default function Hospitals() {
             style={{ ...styles.navBtn, ...styles.navBtnLogout }}
             className="responsive-nav-btn"
             onMouseEnter={e => {
-              e.target.style.background = 'rgba(229, 62, 62, 1)'
+              e.target.style.background = 'rgba(229, 62, 62, 0.2)'
               e.target.style.transform = 'translateY(-1px)'
             }}
             onMouseLeave={e => {
-              e.target.style.background = 'rgba(229, 62, 62, 0.9)'
+              e.target.style.background = 'rgba(229, 62, 62, 0.1)'
               e.target.style.transform = 'translateY(0)'
             }}
           >
@@ -343,12 +344,12 @@ export default function Hospitals() {
             value={search}
             onChange={handleSearch}
             onFocus={e => {
-              e.target.style.borderColor = '#2b6cb0'
-              e.target.style.boxShadow = '0 0 0 3px rgba(43, 108, 176, 0.1)'
+              e.target.style.borderColor = '#00d084'
+              e.target.style.boxShadow = '0 0 0 3px rgba(0, 208, 132, 0.15)'
             }}
             onBlur={e => {
-              e.target.style.borderColor = '#e2e8f0'
-              e.target.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.04)'
+              e.target.style.borderColor = 'rgba(255, 255, 255, 0.15)'
+              e.target.style.boxShadow = 'none'
             }}
             style={styles.searchInput}
             className="responsive-search-input"
@@ -375,7 +376,7 @@ export default function Hospitals() {
                   ...styles.card,
                   animation: `fadeInUp 0.4s ease ${i * 0.06}s both`,
                   ...(hoveredCard === h.id
-                    ? { transform: 'translateY(-4px)', boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)' }
+                    ? { transform: 'translateY(-4px)', boxShadow: '0 8px 30px rgba(0, 208, 132, 0.08)', borderColor: 'rgba(0, 208, 132, 0.5)' }
                     : {}),
                 }}
                 onMouseEnter={() => setHoveredCard(h.id)}
@@ -398,11 +399,11 @@ export default function Hospitals() {
                   style={styles.payBtn}
                   onMouseEnter={e => {
                     e.target.style.transform = 'translateY(-1px)'
-                    e.target.style.boxShadow = '0 4px 14px rgba(43, 108, 176, 0.45)'
+                    e.target.style.boxShadow = '0 4px 14px rgba(0, 208, 132, 0.3)'
                   }}
                   onMouseLeave={e => {
                     e.target.style.transform = 'translateY(0)'
-                    e.target.style.boxShadow = '0 2px 8px rgba(43, 108, 176, 0.3)'
+                    e.target.style.boxShadow = '0 2px 8px rgba(0, 208, 132, 0.2)'
                   }}
                 >
                   Pay Now →
