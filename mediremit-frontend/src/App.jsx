@@ -5,6 +5,7 @@ import Register from './pages/Register'
 import Hospitals from './pages/Hospitals'
 import Payment from './pages/Payment'
 import Transactions from './pages/Transactions'
+import Receipt from './pages/Receipt'
 
 function App() {
   return (
@@ -15,8 +16,11 @@ function App() {
       <Route path="/hospitals" element={<Hospitals />} />
       <Route path="/payment/:id" element={<Payment />} />
       <Route path="/transactions" element={<Transactions />} />
+      <Route path="/payment/callback" element={<Receipt />} />
     </Routes>
   )
 }
 
 export default App
+
+
