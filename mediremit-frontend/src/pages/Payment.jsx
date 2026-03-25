@@ -162,6 +162,97 @@ const styles = {
     marginBottom: '1.4rem',
     paddingLeft: '0.2rem',
   },
+  select: {
+    width: '100%',
+    padding: '0.85rem 0.85rem 0.85rem 2.6rem',
+    border: '1px solid rgba(255, 255, 255, 0.15)',
+    borderRadius: '12px',
+    fontSize: '0.95rem',
+    fontFamily: "'Inter', sans-serif",
+    boxSizing: 'border-box',
+    transition: 'border-color 0.25s ease, box-shadow 0.25s ease',
+    outline: 'none',
+    background: '#1a2035',
+    color: '#ffffff',
+    cursor: 'pointer',
+    WebkitAppearance: 'none',
+    MozAppearance: 'none',
+    appearance: 'none',
+    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right 14px center',
+  },
+  textarea: {
+    width: '100%',
+    padding: '0.85rem 0.85rem 0.85rem 2.6rem',
+    border: '1px solid rgba(255, 255, 255, 0.15)',
+    borderRadius: '12px',
+    fontSize: '0.95rem',
+    fontFamily: "'Inter', sans-serif",
+    boxSizing: 'border-box',
+    transition: 'border-color 0.25s ease, box-shadow 0.25s ease',
+    outline: 'none',
+    background: '#1a2035',
+    color: '#ffffff',
+    resize: 'vertical',
+    minHeight: '70px',
+    maxHeight: '120px',
+  },
+  charCount: {
+    textAlign: 'right',
+    color: 'rgba(255,255,255,0.3)',
+    fontSize: '0.75rem',
+    marginTop: '0.3rem',
+    marginBottom: '0.5rem',
+  },
+  specialtyTag: {
+    background: 'rgba(0, 208, 132, 0.15)',
+    color: '#00d084',
+    padding: '0.2rem 0.6rem',
+    borderRadius: '20px',
+    fontSize: '0.72rem',
+    fontWeight: 500,
+    border: '1px solid rgba(0, 208, 132, 0.2)',
+    display: 'inline-block',
+  },
+  specialtyRow: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '0.3rem',
+    marginTop: '0.6rem',
+  },
+  summaryCard: {
+    background: 'rgba(255, 255, 255, 0.03)',
+    border: '1px solid rgba(0, 208, 132, 0.2)',
+    borderRadius: '14px',
+    padding: '1.2rem 1.4rem',
+    marginBottom: '1.4rem',
+  },
+  summaryTitle: {
+    color: '#00d084',
+    fontWeight: 700,
+    fontSize: '0.85rem',
+    marginBottom: '0.8rem',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+  },
+  summaryRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '0.4rem 0',
+    borderBottom: '1px solid rgba(255,255,255,0.05)',
+  },
+  summaryLabel: {
+    color: 'rgba(255,255,255,0.5)',
+    fontSize: '0.85rem',
+  },
+  summaryValue: {
+    color: '#ffffff',
+    fontSize: '0.85rem',
+    fontWeight: 600,
+    textAlign: 'right',
+    maxWidth: '60%',
+  },
   payButton: {
     width: '100%',
     padding: '0.95rem',
@@ -200,7 +291,7 @@ export default function Payment() {
   const { state } = useLocation()
   const hospital = state?.hospital
   const navigate = useNavigate()
-  const [form, setForm] = useState({ patientName: '', amount: '' })
+  const [form, setForm] = useState({ patientName: '', amount: '', treatment: '', note: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [focused, setFocused] = useState('')
@@ -292,6 +383,13 @@ export default function Payment() {
             <p style={styles.hospitalLocation}>
               <span style={{ color: '#e53e3e' }}>📍</span> {hospital.location}
             </p>
+            {hospital.specialties && hospital.specialties.length > 0 && (
+              <div style={styles.specialtyRow}>
+                {hospital.specialties.map(s => (
+                  <span key={s} style={styles.specialtyTag}>{s}</span>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -318,6 +416,49 @@ export default function Payment() {
               }}
               required
             />
+          </div>
+
+          <label style={styles.label}>Treatment Category</label>
+          <div style={styles.inputWrapper}>
+            <span style={styles.inputIcon}>💊</span>
+            <select
+              value={form.treatment}
+              onFocus={() => setFocused('treatment')}
+              onBlur={() => setFocused('')}
+              onChange={e => setForm({...form, treatment: e.target.value})}
+              style={{
+                ...styles.select,
+                ...(focused === 'treatment' ? styles.inputFocus : {}),
+              }}
+              required
+            >
+              <option value="" disabled>Select treatment type</option>
+              <option value="Consultation">Consultation</option>
+              <option value="Surgery">Surgery</option>
+              <option value="Drugs & Pharmacy">Drugs & Pharmacy</option>
+              <option value="Emergency Care">Emergency Care</option>
+              <option value="Laboratory & Diagnostics">Laboratory & Diagnostics</option>
+              <option value="Physiotherapy">Physiotherapy</option>
+              <option value="Dental Care">Dental Care</option>
+            </select>
+          </div>
+
+          <label style={styles.label}>Note <span style={{ color: 'rgba(255,255,255,0.3)', fontWeight: 400 }}>(optional)</span></label>
+          <div style={styles.inputWrapper}>
+            <span style={{...styles.inputIcon, top: '20px', transform: 'none'}}>📝</span>
+            <textarea
+              placeholder="Add a note (optional) e.g. for mum's knee surgery"
+              value={form.note}
+              maxLength={200}
+              onFocus={() => setFocused('note')}
+              onBlur={() => setFocused('')}
+              onChange={e => setForm({...form, note: e.target.value})}
+              style={{
+                ...styles.textarea,
+                ...(focused === 'note' ? styles.inputFocus : {}),
+              }}
+            />
+            <div style={styles.charCount}>{form.note.length}/200</div>
           </div>
 
           <label style={styles.label}>Amount (NGN)</label>
@@ -354,6 +495,35 @@ export default function Payment() {
               <div style={styles.fxItem}>
                 <div style={styles.fxLabel}>You pay</div>
                 <div style={styles.fxValue}>{formattedAmount}</div>
+              </div>
+            </div>
+          )}
+          {form.amount && form.patientName && form.treatment && (
+            <div style={styles.summaryCard}>
+              <div style={styles.summaryTitle}>📋 Payment Summary</div>
+              <div style={styles.summaryRow}>
+                <span style={styles.summaryLabel}>Hospital</span>
+                <span style={styles.summaryValue}>{hospital.name}</span>
+              </div>
+              <div style={styles.summaryRow}>
+                <span style={styles.summaryLabel}>Patient</span>
+                <span style={styles.summaryValue}>{form.patientName}</span>
+              </div>
+              <div style={styles.summaryRow}>
+                <span style={styles.summaryLabel}>Treatment</span>
+                <span style={styles.summaryValue}>{form.treatment}</span>
+              </div>
+              <div style={styles.summaryRow}>
+                <span style={styles.summaryLabel}>Amount (NGN)</span>
+                <span style={{...styles.summaryValue, color: '#00d084', fontWeight: 700}}>{formattedAmount}</span>
+              </div>
+              <div style={styles.summaryRow}>
+                <span style={styles.summaryLabel}>USD equivalent</span>
+                <span style={styles.summaryValue}>${(form.amount / fxRates.USD).toFixed(2)}</span>
+              </div>
+              <div style={{...styles.summaryRow, borderBottom: 'none'}}>
+                <span style={styles.summaryLabel}>GBP equivalent</span>
+                <span style={styles.summaryValue}>£{(form.amount / fxRates.GBP).toFixed(2)}</span>
               </div>
             </div>
           )}
