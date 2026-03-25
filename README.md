@@ -1,102 +1,189 @@
-# MediRemit 🏥
+<p align="center">
+  <img src="https://img.shields.io/badge/MediRemit-Cross--Border%20Healthcare%20Payments-00d084?style=for-the-badge&logoColor=white" alt="MediRemit" />
+</p>
 
-> Cross-border healthcare payment platform for the Nigerian diaspora.
+<h1 align="center">🏥 MediRemit</h1>
 
-**Live Demo:** https://mediremit-frontend.vercel.app  
-**Backend API:** https://mediremit-backend.onrender.com
+<p align="center">
+  <strong>Pay Nigerian hospitals directly — from anywhere in the world.</strong><br/>
+  <em>Built for the Enyata × Interswitch Buildathon 2026</em>
+</p>
 
----
+<p align="center">
+  <a href="https://mediremit-frontend.vercel.app"><img src="https://img.shields.io/badge/🚀_Live_Demo-mediremit--frontend.vercel.app-00d084?style=flat-square" alt="Live Demo" /></a>
+  <a href="https://mediremit-backend.onrender.com"><img src="https://img.shields.io/badge/🔗_Backend_API-mediremit--backend.onrender.com-0a0f1e?style=flat-square" alt="Backend API" /></a>
+</p>
 
-## The Problem
-
-Millions of Nigerians in the diaspora struggle to pay for their family's medical bills back home:
-
-- Wire transfers take 3–5 days and cost 5–10% in fees
-- Money lands as cash with no guarantee it reaches the hospital
-- Families have no visibility into how the money is spent
-- Hospitals have no direct international payment infrastructure
-
-## The Solution
-
-MediRemit lets diaspora users **pay Nigerian hospitals directly** — bypassing the person entirely — using Interswitch's payment infrastructure.
-
----
-
-## Features
-
-- **Hospital Directory** — Search and filter verified Nigerian hospitals
-- **Direct Hospital Payment** — Pay hospitals directly via Interswitch Web Checkout API
-- **Transaction History** — Track all past payments with real-time status
-- **Secure Authentication** — JWT-based auth with bcrypt password hashing
-- **Real Database** — All data persisted in Supabase (PostgreSQL)
+<p align="center">
+  <img src="https://img.shields.io/badge/React_19-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React" />
+  <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white" alt="Express" />
+  <img src="https://img.shields.io/badge/Supabase-3FCF8E?style=flat-square&logo=supabase&logoColor=white" alt="Supabase" />
+  <img src="https://img.shields.io/badge/Interswitch-002B5C?style=flat-square&logoColor=white" alt="Interswitch" />
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white" alt="Vercel" />
+  <img src="https://img.shields.io/badge/Render-46E3B7?style=flat-square&logo=render&logoColor=white" alt="Render" />
+</p>
 
 ---
 
-## Tech Stack
+## 🎯 What is MediRemit?
 
-**Frontend**
-- React 19 + Vite
-- React Router DOM
-- Axios
-- Deployed on Vercel
+MediRemit is a **cross-border healthcare payment platform** that enables Nigerians in the diaspora to pay hospital bills directly — bypassing middlemen, eliminating wire transfer delays, and ensuring every naira reaches the hospital.
 
-**Backend**
-- Node.js + Express
-- Supabase (PostgreSQL)
-- JWT + bcrypt authentication
-- Deployed on Render
+> _"Your mum needs care. Pay her hospital right now."_
 
-**Integrations**
-- Interswitch Web Checkout API (payment processing)
-- Interswitch OAuth 2.0 (authentication)
-- Supabase Realtime Database
+Built on **Interswitch's Web Checkout API**, MediRemit provides instant, secure, and transparent payments to verified Nigerian hospitals from anywhere in the world.
 
 ---
 
-## API Endpoints
+## 💡 The Problem
 
-### Auth
-- `POST /auth/register` — Register a new user
-- `POST /auth/login` — Login and get JWT token
+Millions of Nigerians abroad face the same painful cycle when a family member needs medical care:
+
+| Pain Point | Impact |
+|---|---|
+| ⏰ **Wire transfers take 3–5 days** | Delays life-saving treatment |
+| 💸 **5–10% lost in fees** | Correspondent banks, hidden FX markups, and withdrawal charges |
+| ❌ **No payment guarantee** | Cash sent to relatives may never reach the hospital |
+| 🔍 **Zero transparency** | No receipts, no tracking, no proof of payment |
+
+## ✅ The Solution
+
+MediRemit **eliminates the middleman entirely**:
+
+1. **Search** our verified hospital directory
+2. **Enter** the patient name and amount
+3. **Pay** — funds settle directly into the hospital's account via Interswitch
+4. **Track** — both sender and hospital receive instant digital receipts
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+|---|---|
+| 🏥 **Hospital Directory** | Search and browse verified Nigerian hospitals by name, location, or specialty |
+| 💳 **Direct Hospital Payment** | Pay hospitals instantly via Interswitch Web Checkout — no middleman |
+| 📊 **Transaction History** | Full payment ledger with real-time status tracking (Successful / Pending / Failed) |
+| 🔐 **Secure Authentication** | JWT-based auth with bcrypt password hashing |
+| 🗄️ **Real Database** | All data persisted in Supabase (PostgreSQL) |
+| 🎨 **Premium Dark UI** | Modern glassmorphism design inspired by Stripe, Deel, and Remote.com |
+
+---
+
+## 📸 Screenshots
+
+<p align="center">
+  <img src="./screenshots/landing.png" width="48%" alt="Landing Page" />
+  <img src="./screenshots/hospitals.png" width="48%" alt="Hospital Directory" />
+</p>
+<p align="center">
+  <img src="./screenshots/payment.png" width="48%" alt="Payment Checkout" />
+  <img src="./screenshots/transactions.png" width="48%" alt="Transaction History" />
+</p>
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+| Technology | Purpose |
+|---|---|
+| **React 19** | Component-based UI framework |
+| **Vite** | Lightning-fast build tool |
+| **React Router DOM** | Client-side routing |
+| **Axios** | HTTP client for API communication |
+| **Vercel** | Frontend deployment & CDN |
+
+### Backend
+
+| Technology | Purpose |
+|---|---|
+| **Node.js + Express** | REST API server |
+| **Supabase (PostgreSQL)** | Managed database with realtime capabilities |
+| **JWT + bcrypt** | Authentication & password security |
+| **Render** | Backend deployment |
+
+### Integrations
+
+| Service | Usage |
+|---|---|
+| **Interswitch Web Checkout API** | Payment processing & settlement |
+| **Interswitch OAuth 2.0** | Secure API authentication |
+| **Supabase Realtime** | Live database sync |
+
+---
+
+## 📡 API Endpoints
+
+### Authentication
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/auth/register` | Register a new user |
+| `POST` | `/auth/login` | Login and receive JWT token |
 
 ### Hospitals
-- `GET /hospitals` — Get all hospitals
-- `GET /hospitals?search=lagos` — Search hospitals
-- `GET /hospitals/:id` — Get single hospital
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/hospitals` | List all verified hospitals |
+| `GET` | `/hospitals?search=lagos` | Search hospitals by name/location |
+| `GET` | `/hospitals/:id` | Get single hospital details |
 
 ### Payments
-- `POST /checkout/pay` — Initiate Interswitch payment
-- `GET /checkout/callback` — Handle payment callback
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/checkout/pay` | Initiate Interswitch payment session |
+| `GET` | `/checkout/callback` | Handle payment gateway callback |
 
 ### Transactions
-- `POST /transactions` — Save a transaction
-- `GET /transactions` — Get user transaction history
-- `PATCH /transactions/:ref/status` — Update transaction status
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/transactions` | Record a new transaction |
+| `GET` | `/transactions` | Get authenticated user's payment history |
+| `PATCH` | `/transactions/:ref/status` | Update transaction status |
 
 ---
 
-## Running Locally
+## 🚀 Running Locally
 
-**Backend**
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- Supabase account
+- Interswitch sandbox credentials
+
+### Backend
+
 ```bash
-git clone https://github.com/Hillary3000-web/Root-Access-Hackathon
+git clone https://github.com/Hillary3000-web/Root-Access-Hackathon.git
 cd Root-Access-Hackathon
 npm install
-# Add your .env variables
+cp .env.example .env   # Add your environment variables
 node index.js
 ```
 
-**Frontend**
+### Frontend
+
 ```bash
 cd mediremit-frontend
 npm install
 npm run dev
 ```
 
----
+The frontend runs on `http://localhost:5173` and the backend on `http://localhost:3000`.
 
-## Environment Variables
-```
+### Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
 PORT=3000
 INTERSWITCH_CLIENT_ID=your_client_id
 INTERSWITCH_SECRET_KEY=your_secret_key
@@ -111,14 +198,47 @@ BASE_URL=https://mediremit-backend.onrender.com
 
 ---
 
-## Team
+## 🏗️ Architecture
 
-**Hillary Chukwuma Prince** — Backend Lead  
-Backend architecture, Interswitch API integration, database design, deployment
+```
+┌──────────────────────┐       ┌──────────────────────┐
+│    React Frontend    │◄─────►│   Express Backend    │
+│    (Vercel)          │ REST  │   (Render)           │
+└──────────────────────┘       └──────────┬───────────┘
+                                          │
+                          ┌───────────────┼───────────────┐
+                          │               │               │
+                   ┌──────▼──────┐ ┌──────▼──────┐ ┌──────▼──────┐
+                   │  Supabase   │ │ Interswitch │ │    JWT      │
+                   │ PostgreSQL  │ │ Web Checkout│ │   Auth      │
+                   └─────────────┘ └─────────────┘ └─────────────┘
+```
 
 ---
 
-## Built For
+## 👥 Team
 
-**Enyata × Interswitch Buildathon 2026**  
-Categories: Payments · Cross-Border · Health
+| Name | Role |
+|---|---|
+| **Hillary Chukwuma Prince** | Backend Lead — Architecture, Interswitch API integration, database design, deployment |
+
+---
+
+## 🏆 Built For
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Enyata_×_Interswitch-Buildathon_2026-00d084?style=for-the-badge" alt="Buildathon 2026" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Category-Payments-0a0f1e?style=flat-square" alt="Payments" />
+  <img src="https://img.shields.io/badge/Category-Cross--Border-0a0f1e?style=flat-square" alt="Cross-Border" />
+  <img src="https://img.shields.io/badge/Category-Health-0a0f1e?style=flat-square" alt="Health" />
+</p>
+
+---
+
+<p align="center">
+  <strong>MediRemit</strong> — Your family deserves certainty. Give it to them.<br/>
+  <sub>© 2026 MediRemit. All rights reserved.</sub>
+</p>
