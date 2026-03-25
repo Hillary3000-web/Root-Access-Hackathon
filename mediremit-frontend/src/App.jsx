@@ -14,9 +14,9 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/hospitals" element={<Hospitals />} />
+      <Route path="/payment/callback" element={<Receipt />} />
       <Route path="/payment/:id" element={<Payment />} />
       <Route path="/transactions" element={<Transactions />} />
-      <Route path="/payment/callback" element={<Receipt />} />
     </Routes>
   )
 }
