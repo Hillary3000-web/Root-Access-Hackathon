@@ -329,6 +329,14 @@ export default function Hospitals() {
             💳 My Payments
           </button>
           <button
+            onClick={() => navigate('/profile')}
+            style={styles.navBtn}
+            onMouseEnter={e => { e.target.style.background = 'rgba(255,255,255,0.05)' }}
+            onMouseLeave={e => { e.target.style.background = 'transparent' }}
+          >
+            👤 Profile
+          </button>
+          <button
             onClick={logout}
             style={{ ...styles.navBtn, ...styles.navBtnLogout }}
             onMouseEnter={e => { e.target.style.background = 'rgba(229, 62, 62, 0.2)' }}
