@@ -9,7 +9,6 @@ const styles = {
     minHeight: '100vh',
     background: '#0a0f1e',
   },
-  /* ---- Navbar ---- */
   navbar: {
     background: '#0d1117',
     padding: '0 2rem',
@@ -17,7 +16,6 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     height: '68px',
-    boxShadow: 'none',
     borderBottom: '1px solid rgba(255,255,255,0.1)',
     position: 'sticky',
     top: 0,
@@ -60,7 +58,6 @@ const styles = {
   },
   navBtn: {
     background: 'transparent',
-    backdropFilter: 'blur(10px)',
     color: 'white',
     border: '1px solid rgba(255, 255, 255, 0.2)',
     padding: '0.5rem 1.1rem',
@@ -76,7 +73,6 @@ const styles = {
     border: '1px solid rgba(229, 62, 62, 0.2)',
     color: '#fc8181',
   },
-  /* ---- Content ---- */
   container: {
     padding: '2rem',
     maxWidth: '1100px',
@@ -98,10 +94,9 @@ const styles = {
     fontSize: '0.95rem',
     margin: 0,
   },
-  /* ---- Search ---- */
   searchWrapper: {
     position: 'relative',
-    marginBottom: '2rem',
+    marginBottom: '1rem',
   },
   searchIcon: {
     position: 'absolute',
@@ -125,13 +120,34 @@ const styles = {
     outline: 'none',
     transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
   },
-  /* ---- Grid ---- */
+  filterRow: {
+    display: 'flex',
+    gap: '0.75rem',
+    marginBottom: '2rem',
+    flexWrap: 'wrap',
+  },
+  filterBtn: {
+    padding: '0.45rem 1rem',
+    borderRadius: '20px',
+    border: '1px solid rgba(255,255,255,0.15)',
+    background: 'transparent',
+    color: 'rgba(255,255,255,0.6)',
+    cursor: 'pointer',
+    fontSize: '0.85rem',
+    fontFamily: "'Inter', sans-serif",
+    transition: 'all 0.2s ease',
+  },
+  filterBtnActive: {
+    background: 'rgba(0,208,132,0.15)',
+    border: '1px solid rgba(0,208,132,0.4)',
+    color: '#00d084',
+    fontWeight: 600,
+  },
   grid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(310px, 1fr))',
     gap: '1.5rem',
   },
-  /* ---- Hospital Card ---- */
   card: {
     background: 'rgba(255, 255, 255, 0.05)',
     backdropFilter: 'blur(20px)',
@@ -204,7 +220,6 @@ const styles = {
     boxShadow: '0 2px 8px rgba(0, 208, 132, 0.2)',
     letterSpacing: '0.2px',
   },
-  /* ---- Loading ---- */
   loadingWrapper: {
     display: 'flex',
     flexDirection: 'column',
@@ -225,7 +240,6 @@ const styles = {
     color: 'rgba(255, 255, 255, 0.6)',
     fontSize: '0.95rem',
   },
-  /* ---- Empty State ---- */
   emptyState: {
     textAlign: 'center',
     padding: '4rem 2rem',
@@ -243,7 +257,6 @@ const styles = {
   },
 }
 
-/* Inject spinner keyframe */
 if (typeof document !== 'undefined' && !document.getElementById('mediremit-spin')) {
   const styleSheet = document.createElement('style')
   styleSheet.id = 'mediremit-spin'
@@ -251,9 +264,12 @@ if (typeof document !== 'undefined' && !document.getElementById('mediremit-spin'
   document.head.appendChild(styleSheet)
 }
 
+const LOCATIONS = ['All', 'Lagos', 'Abuja', 'Ibadan', 'Port Harcourt', 'Kano', 'Enugu', 'Benin City', 'Kaduna', 'Jos', 'Owerri', 'Awka', 'Ile-Ife', 'Irrua']
+
 export default function Hospitals() {
   const [hospitals, setHospitals] = useState([])
   const [search, setSearch] = useState('')
+  const [activeLocation, setActiveLocation] = useState('All')
   const [loading, setLoading] = useState(true)
   const [hoveredCard, setHoveredCard] = useState(null)
   const navigate = useNavigate()
@@ -263,9 +279,15 @@ export default function Hospitals() {
     fetchHospitals()
   }, [])
 
-  const fetchHospitals = async (q = '') => {
+  const fetchHospitals = async (q = '', location = '') => {
     try {
-      const res = await axios.get(`${API}/hospitals${q ? `?search=${q}` : ''}`)
+      let url = `${API}/hospitals`
+      const params = []
+      if (q) params.push(`search=${q}`)
+      if (location && location !== 'All') params.push(`location=${location}`)
+      if (params.length) url += `?${params.join('&')}`
+
+      const res = await axios.get(url)
       setHospitals(res.data.data)
     } catch (err) {
       console.error(err)
@@ -276,7 +298,12 @@ export default function Hospitals() {
 
   const handleSearch = (e) => {
     setSearch(e.target.value)
-    fetchHospitals(e.target.value)
+    fetchHospitals(e.target.value, activeLocation)
+  }
+
+  const handleLocationFilter = (location) => {
+    setActiveLocation(location)
+    fetchHospitals(search, location)
   }
 
   const logout = () => {
@@ -286,56 +313,38 @@ export default function Hospitals() {
 
   return (
     <div style={styles.page}>
-      {/* Navbar */}
-      <nav style={styles.navbar} className="responsive-navbar">
+      <nav style={styles.navbar}>
         <div style={styles.navBrand}>
           <div style={styles.navLogoIcon}>M</div>
           <h1 style={styles.navLogo}>MediRemit</h1>
         </div>
-        <div style={styles.navRight} className="responsive-nav-right">
-          <span style={styles.navGreeting} className="responsive-nav-greeting">👋 Hi, {user.fullName}</span>
+        <div style={styles.navRight}>
+          <span style={styles.navGreeting}>👋 Hi, {user.fullName}</span>
           <button
             onClick={() => navigate('/transactions')}
             style={styles.navBtn}
-            className="responsive-nav-btn"
-            onMouseEnter={e => {
-              e.target.style.background = 'rgba(255,255,255,0.05)'
-              e.target.style.transform = 'translateY(-1px)'
-            }}
-            onMouseLeave={e => {
-              e.target.style.background = 'transparent'
-              e.target.style.transform = 'translateY(0)'
-            }}
+            onMouseEnter={e => { e.target.style.background = 'rgba(255,255,255,0.05)' }}
+            onMouseLeave={e => { e.target.style.background = 'transparent' }}
           >
             💳 My Payments
           </button>
           <button
             onClick={logout}
             style={{ ...styles.navBtn, ...styles.navBtnLogout }}
-            className="responsive-nav-btn"
-            onMouseEnter={e => {
-              e.target.style.background = 'rgba(229, 62, 62, 0.2)'
-              e.target.style.transform = 'translateY(-1px)'
-            }}
-            onMouseLeave={e => {
-              e.target.style.background = 'rgba(229, 62, 62, 0.1)'
-              e.target.style.transform = 'translateY(0)'
-            }}
+            onMouseEnter={e => { e.target.style.background = 'rgba(229, 62, 62, 0.2)' }}
+            onMouseLeave={e => { e.target.style.background = 'rgba(229, 62, 62, 0.1)' }}
           >
             Logout
           </button>
         </div>
       </nav>
 
-      <div style={styles.container} className="responsive-container">
+      <div style={styles.container}>
         <div style={styles.header}>
-          <h2 style={styles.title} className="responsive-title">Find a Hospital</h2>
-          <p style={styles.desc}>
-            Search and pay Nigerian hospitals directly from anywhere in the world.
-          </p>
+          <h2 style={styles.title}>Find a Hospital</h2>
+          <p style={styles.desc}>Search and pay Nigerian hospitals directly from anywhere in the world.</p>
         </div>
 
-        {/* Search */}
         <div style={styles.searchWrapper}>
           <span style={styles.searchIcon}>🔍</span>
           <input
@@ -352,11 +361,37 @@ export default function Hospitals() {
               e.target.style.boxShadow = 'none'
             }}
             style={styles.searchInput}
-            className="responsive-search-input"
           />
         </div>
 
-        {/* Hospital Grid */}
+        {/* Location Filter Pills */}
+        <div style={styles.filterRow}>
+          {LOCATIONS.map(loc => (
+            <button
+              key={loc}
+              onClick={() => handleLocationFilter(loc)}
+              style={{
+                ...styles.filterBtn,
+                ...(activeLocation === loc ? styles.filterBtnActive : {}),
+              }}
+              onMouseEnter={e => {
+                if (activeLocation !== loc) {
+                  e.target.style.color = '#ffffff'
+                  e.target.style.borderColor = 'rgba(255,255,255,0.3)'
+                }
+              }}
+              onMouseLeave={e => {
+                if (activeLocation !== loc) {
+                  e.target.style.color = 'rgba(255,255,255,0.6)'
+                  e.target.style.borderColor = 'rgba(255,255,255,0.15)'
+                }
+              }}
+            >
+              {loc}
+            </button>
+          ))}
+        </div>
+
         {loading ? (
           <div style={styles.loadingWrapper}>
             <div style={styles.spinner} />
@@ -368,7 +403,7 @@ export default function Hospitals() {
             <p style={styles.emptyText}>No hospitals found. Try a different search term.</p>
           </div>
         ) : (
-          <div style={styles.grid} className="responsive-grid">
+          <div style={styles.grid}>
             {hospitals.map((h, i) => (
               <div
                 key={h.id}
