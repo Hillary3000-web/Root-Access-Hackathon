@@ -5,8 +5,8 @@
 <h1 align="center">🏥 MediRemit</h1>
 
 <p align="center">
-  <strong>Pay Nigerian hospitals directly — from anywhere in the world.</strong><br/>
-  <em>Built for the Enyata × Interswitch Buildathon 2026</em>
+  <strong>Your mum needs care. Pay her hospital right now.</strong><br/>
+  <em>Cross-border healthcare payments for the Nigerian diaspora.</em>
 </p>
 
 <p align="center">
@@ -29,33 +29,17 @@
 
 ## 🎯 What is MediRemit?
 
-MediRemit is a **cross-border healthcare payment platform** that enables Nigerians in the diaspora to pay hospital bills directly — bypassing middlemen, eliminating wire transfer delays, and ensuring every naira reaches the hospital.
-
-> _"Your mum needs care. Pay her hospital right now."_
-
-Built on **Interswitch's Web Checkout API**, MediRemit provides instant, secure, and transparent payments to verified Nigerian hospitals from anywhere in the world.
+MediRemit is a cross-border healthcare payment platform that lets Nigerians in the diaspora **pay hospital bills directly** — bypassing middlemen, eliminating wire transfer delays, and ensuring every naira reaches the hospital. Built on **Interswitch's Web Checkout API**, payments settle instantly into verified hospital accounts.
 
 ---
 
 ## 💡 The Problem
 
-Millions of Nigerians abroad face the same painful cycle when a family member needs medical care:
-
-| Pain Point | Impact |
-|---|---|
-| ⏰ **Wire transfers take 3–5 days** | Delays life-saving treatment |
-| 💸 **5–10% lost in fees** | Correspondent banks, hidden FX markups, and withdrawal charges |
-| ❌ **No payment guarantee** | Cash sent to relatives may never reach the hospital |
-| 🔍 **Zero transparency** | No receipts, no tracking, no proof of payment |
+Millions of Nigerians abroad send money home for medical bills through wire transfers that take 3–5 days, lose 5–10% in hidden fees, and offer zero guarantee the cash reaches the hospital. Families have no visibility, no receipts, and no peace of mind.
 
 ## ✅ The Solution
 
-MediRemit **eliminates the middleman entirely**:
-
-1. **Search** our verified hospital directory
-2. **Enter** the patient name and amount
-3. **Pay** — funds settle directly into the hospital's account via Interswitch
-4. **Track** — both sender and hospital receive instant digital receipts
+MediRemit eliminates the middleman entirely. Search our directory of 15 verified Nigerian hospitals, select a treatment category, enter the patient details, and pay directly via Interswitch — with live FX conversion, instant digital receipts, and full transaction tracking.
 
 ---
 
@@ -63,12 +47,17 @@ MediRemit **eliminates the middleman entirely**:
 
 | Feature | Description |
 |---|---|
-| 🏥 **Hospital Directory** | Search and browse verified Nigerian hospitals by name, location, or specialty |
-| 💳 **Direct Hospital Payment** | Pay hospitals instantly via Interswitch Web Checkout — no middleman |
+| 🎨 **Animated Landing Page** | Dark premium UI with scroll animations, glassmorphism cards, and trust badges |
+| 🔐 **User Authentication** | JWT-based registration & login with bcrypt password hashing |
+| 🏥 **Hospital Directory** | Search 15 verified hospitals by name, location, or specialty with location filter pills |
+| 💊 **Treatment Categories** | 7 categories: Consultation, Surgery, Drugs & Pharmacy, Emergency Care, Lab & Diagnostics, Physiotherapy, Dental Care |
+| 💱 **Live FX Conversion** | Real-time NGN → USD/GBP rates via exchangerate-api.com |
+| 📋 **Payment Summary** | Preview card showing hospital, patient, treatment, amount in NGN/USD/GBP before paying |
+| 💳 **Interswitch Checkout** | Direct hospital payment via Interswitch Web Checkout API |
+| 🧾 **Payment Receipt** | Callback page showing success/failure with transaction details |
 | 📊 **Transaction History** | Full payment ledger with real-time status tracking (Successful / Pending / Failed) |
-| 🔐 **Secure Authentication** | JWT-based auth with bcrypt password hashing |
-| 🗄️ **Real Database** | All data persisted in Supabase (PostgreSQL) |
-| 🎨 **Premium Dark UI** | Modern glassmorphism design inspired by Stripe, Deel, and Remote.com |
+| 👤 **User Profile** | Dashboard with total spent, payment count, success rate, preferred hospital, and recent transactions |
+| 📱 **Fully Responsive** | Mobile-first design with breakpoints at 900px, 768px, and 480px |
 
 ---
 
@@ -82,6 +71,9 @@ MediRemit **eliminates the middleman entirely**:
   <img src="./screenshots/payment.png" width="48%" alt="Payment Checkout" />
   <img src="./screenshots/transactions.png" width="48%" alt="Transaction History" />
 </p>
+<p align="center">
+  <img src="./screenshots/profile.png" width="48%" alt="User Profile" />
+</p>
 
 ---
 
@@ -92,8 +84,8 @@ MediRemit **eliminates the middleman entirely**:
 | Technology | Purpose |
 |---|---|
 | **React 19** | Component-based UI framework |
-| **Vite** | Lightning-fast build tool |
-| **React Router DOM** | Client-side routing |
+| **Vite** | Lightning-fast dev server & bundler |
+| **React Router DOM** | Client-side routing (8 routes) |
 | **Axios** | HTTP client for API communication |
 | **Vercel** | Frontend deployment & CDN |
 
@@ -112,7 +104,7 @@ MediRemit **eliminates the middleman entirely**:
 |---|---|
 | **Interswitch Web Checkout API** | Payment processing & settlement |
 | **Interswitch OAuth 2.0** | Secure API authentication |
-| **Supabase Realtime** | Live database sync |
+| **ExchangeRate API** | Live NGN → USD/GBP conversion |
 
 ---
 
@@ -131,6 +123,7 @@ MediRemit **eliminates the middleman entirely**:
 |---|---|---|
 | `GET` | `/hospitals` | List all verified hospitals |
 | `GET` | `/hospitals?search=lagos` | Search hospitals by name/location |
+| `GET` | `/hospitals?location=Lagos` | Filter hospitals by city |
 | `GET` | `/hospitals/:id` | Get single hospital details |
 
 ### Payments
@@ -147,6 +140,21 @@ MediRemit **eliminates the middleman entirely**:
 | `POST` | `/transactions` | Record a new transaction |
 | `GET` | `/transactions` | Get authenticated user's payment history |
 | `PATCH` | `/transactions/:ref/status` | Update transaction status |
+
+---
+
+## 🗺️ Frontend Routes
+
+| Route | Page |
+|---|---|
+| `/` | Landing page |
+| `/login` | User login |
+| `/register` | User registration |
+| `/hospitals` | Hospital directory with search & filters |
+| `/payment/:id` | Payment form with FX conversion |
+| `/payment/callback` | Payment receipt (success/failure) |
+| `/transactions` | Transaction history |
+| `/profile` | User profile & stats dashboard |
 
 ---
 
@@ -181,8 +189,6 @@ The frontend runs on `http://localhost:5173` and the backend on `http://localhos
 
 ### Environment Variables
 
-Create a `.env` file in the project root:
-
 ```env
 PORT=3000
 INTERSWITCH_CLIENT_ID=your_client_id
@@ -202,15 +208,15 @@ BASE_URL=https://mediremit-backend.onrender.com
 
 ```
 ┌──────────────────────┐       ┌──────────────────────┐
-│    React Frontend    │◄─────►│   Express Backend    │
-│    (Vercel)          │ REST  │   (Render)           │
+│   React + Vite       │◄─────►│   Express Backend    │
+│   (Vercel)           │ REST  │   (Render)           │
 └──────────────────────┘       └──────────┬───────────┘
                                           │
                           ┌───────────────┼───────────────┐
                           │               │               │
                    ┌──────▼──────┐ ┌──────▼──────┐ ┌──────▼──────┐
-                   │  Supabase   │ │ Interswitch │ │    JWT      │
-                   │ PostgreSQL  │ │ Web Checkout│ │   Auth      │
+                   │  Supabase   │ │ Interswitch │ │ ExchangeRate│
+                   │ PostgreSQL  │ │ Web Checkout│ │     API     │
                    └─────────────┘ └─────────────┘ └─────────────┘
 ```
 
@@ -220,7 +226,7 @@ BASE_URL=https://mediremit-backend.onrender.com
 
 | Name | Role |
 |---|---|
-| **Hillary Chukwuma Prince** | Backend Lead — Architecture, Interswitch API integration, database design, deployment |
+| **Hillary Chukwuma Prince** | Backend Lead & Full Stack — Architecture, Interswitch API integration, frontend UI/UX, database design, deployment |
 
 ---
 
@@ -239,6 +245,6 @@ BASE_URL=https://mediremit-backend.onrender.com
 ---
 
 <p align="center">
-  <strong>MediRemit</strong> — Your family deserves certainty. Give it to them.<br/>
+  <strong>MediRemit</strong> — Stop sending cash home and hoping. Pay the hospital directly.<br/>
   <sub>© 2026 MediRemit. All rights reserved.</sub>
 </p>
