@@ -343,12 +343,12 @@ export default function Profile() {
 
   return (
     <div style={styles.page}>
-      <nav style={styles.navbar}>
+      <nav style={styles.navbar} className="mr-navbar">
         <div style={styles.navBrand}>
           <div style={styles.navLogoIcon}>M</div>
           <h1 style={styles.navLogo}>MediRemit</h1>
         </div>
-        <div style={styles.navRight}>
+        <div style={styles.navRight} className="mr-nav-right">
           <button
             onClick={() => navigate('/hospitals')}
             style={styles.navBtn}
@@ -368,10 +368,10 @@ export default function Profile() {
         </div>
       </nav>
 
-      <div style={styles.container}>
+      <div style={styles.container} className="mr-container">
         {/* Profile Header */}
-        <div style={styles.profileCard}>
-          <div style={styles.avatar}>{initials}</div>
+        <div style={styles.profileCard} className="mr-profile-card">
+          <div style={styles.avatar} className="mr-avatar">{initials}</div>
           <div>
             <h2 style={styles.profileName}>{user.fullName || 'User'}</h2>
             <p style={styles.profileEmail}>{user.email || '—'}</p>
@@ -391,7 +391,7 @@ export default function Profile() {
           <>
             {/* Stats Grid */}
             <h3 style={styles.sectionTitle}>Overview</h3>
-            <div style={styles.statsGrid}>
+            <div style={styles.statsGrid} className="mr-stats-grid">
               <div
                 style={styles.statCard}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(0,208,132,0.5)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
@@ -440,6 +440,7 @@ export default function Profile() {
                     <div
                       key={t.id || i}
                       style={styles.txCard}
+                      className="mr-tx-card"
                       onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(0,208,132,0.5)' }}
                       onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)' }}
                     >
@@ -476,7 +477,7 @@ export default function Profile() {
             {preferred && (
               <>
                 <h3 style={{ ...styles.sectionTitle, marginTop: '2.5rem' }}>⭐ Preferred Hospital</h3>
-                <div style={styles.preferredCard}>
+                <div style={styles.preferredCard} className="mr-preferred-card">
                   <div style={styles.preferredIcon}>🏥</div>
                   <div>
                     <p style={styles.preferredName}>{preferred.name}</p>

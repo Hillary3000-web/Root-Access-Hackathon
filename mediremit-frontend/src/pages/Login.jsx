@@ -188,9 +188,9 @@ export default function Login() {
   }
 
   return (
-    <div style={styles.page} className="responsive-page-center">
+    <div style={styles.page} className="mr-page-center">
       <div style={styles.bgPattern} />
-      <div style={styles.card} className="responsive-card">
+      <div style={styles.card} className="mr-auth-card">
         <div style={styles.logoRow}>
           <div style={styles.logoIcon}>M</div>
           <span style={styles.logoText}>MediRemit</span>

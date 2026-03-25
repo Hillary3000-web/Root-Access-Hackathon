@@ -313,13 +313,13 @@ export default function Hospitals() {
 
   return (
     <div style={styles.page}>
-      <nav style={styles.navbar}>
+      <nav style={styles.navbar} className="mr-navbar">
         <div style={styles.navBrand}>
           <div style={styles.navLogoIcon}>M</div>
           <h1 style={styles.navLogo}>MediRemit</h1>
         </div>
-        <div style={styles.navRight}>
-          <span style={styles.navGreeting}>👋 Hi, {user.fullName}</span>
+        <div style={styles.navRight} className="mr-nav-right">
+          <span style={styles.navGreeting} className="mr-greeting">👋 Hi, {user.fullName}</span>
           <button
             onClick={() => navigate('/transactions')}
             style={styles.navBtn}
@@ -347,9 +347,9 @@ export default function Hospitals() {
         </div>
       </nav>
 
-      <div style={styles.container}>
+      <div style={styles.container} className="mr-container">
         <div style={styles.header}>
-          <h2 style={styles.title}>Find a Hospital</h2>
+          <h2 style={styles.title} className="mr-title">Find a Hospital</h2>
           <p style={styles.desc}>Search and pay Nigerian hospitals directly from anywhere in the world.</p>
         </div>
 
@@ -373,7 +373,7 @@ export default function Hospitals() {
         </div>
 
         {/* Location Filter Pills */}
-        <div style={styles.filterRow}>
+        <div style={styles.filterRow} className="mr-filter-row">
           {LOCATIONS.map(loc => (
             <button
               key={loc}
@@ -411,7 +411,7 @@ export default function Hospitals() {
             <p style={styles.emptyText}>No hospitals found. Try a different search term.</p>
           </div>
         ) : (
-          <div style={styles.grid}>
+          <div style={styles.grid} className="mr-grid">
             {hospitals.map((h, i) => (
               <div
                 key={h.id}

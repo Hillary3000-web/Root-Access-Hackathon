@@ -305,13 +305,13 @@ export default function Transactions() {
   return (
     <div style={styles.page}>
       {/* Navbar */}
-      <nav style={styles.navbar} className="responsive-navbar">
+      <nav style={styles.navbar} className="mr-navbar">
         <div style={styles.navBrand}>
           <div style={styles.navLogoIcon}>M</div>
           <h1 style={styles.navLogo}>MediRemit</h1>
         </div>
         <button
-          className="responsive-nav-btn"
+          className="mr-nav-btn"
           onClick={() => navigate('/hospitals')}
           style={styles.navBtn}
           onMouseEnter={e => {
@@ -327,15 +327,15 @@ export default function Transactions() {
         </button>
       </nav>
 
-      <div style={styles.container} className="responsive-container">
-        <div style={styles.headerRow} className="responsive-header-row">
+      <div style={styles.container} className="mr-container">
+        <div style={styles.headerRow} className="mr-header-row">
           <div>
-            <h2 style={styles.title} className="responsive-title">Payment History</h2>
+            <h2 style={styles.title} className="mr-title">Payment History</h2>
             <p style={styles.desc}>Track all your hospital payments</p>
           </div>
           {transactions.length > 0 && (
             <div style={styles.statsRow}>
-              <div className="responsive-stat-badge" style={{
+              <div className="mr-stat-badge" style={{
                 ...styles.statBadge,
                 background: 'rgba(255, 255, 255, 0.05)',
                 color: '#ffffff',
@@ -343,7 +343,7 @@ export default function Transactions() {
                 📊 {transactions.length} {transactions.length === 1 ? 'payment' : 'payments'}
               </div>
               {totalPaid > 0 && (
-                <div className="responsive-stat-badge" style={{
+                <div className="mr-stat-badge" style={{
                   ...styles.statBadge,
                   background: 'rgba(0, 208, 132, 0.1)',
                   color: '#00d084',
@@ -389,7 +389,7 @@ export default function Transactions() {
               return (
                 <div
                   key={t.id}
-                  className="responsive-tx-card"
+                  className="mr-tx-card"
                   style={{
                     ...styles.txCard,
                     animation: `fadeInUp 0.35s ease ${i * 0.05}s both`,
@@ -405,7 +405,7 @@ export default function Transactions() {
                     e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'
                   }}
                 >
-                  <div style={styles.txLeft} className="responsive-tx-left">
+                  <div style={styles.txLeft} className="mr-tx-left">
                     <div style={styles.txIcon}>🏥</div>
                     <div>
                       <p style={styles.txHospital}>{t.hospitals?.name || 'Hospital'}</p>
@@ -419,7 +419,7 @@ export default function Transactions() {
                       </p>
                     </div>
                   </div>
-                  <div style={styles.txRight} className="responsive-tx-right">
+                  <div style={styles.txRight} className="mr-tx-right">
                     <p style={styles.txAmount}>₦{Number(t.amount).toLocaleString()}</p>
                     <span style={{
                       ...styles.txBadge,

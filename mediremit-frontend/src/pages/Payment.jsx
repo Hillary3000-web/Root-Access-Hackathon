@@ -363,8 +363,8 @@ export default function Payment() {
     : '₦0'
 
   return (
-    <div style={styles.page}>
-      <div style={styles.card}>
+    <div style={styles.page} className="mr-page-center">
+      <div style={styles.card} className="mr-auth-card">
         <button
           onClick={() => navigate('/hospitals')}
           style={styles.backBtn}
@@ -376,7 +376,7 @@ export default function Payment() {
 
         <h2 style={styles.title}>Make Payment</h2>
 
-        <div style={styles.hospitalBox}>
+        <div style={styles.hospitalBox} className="mr-hospital-box">
           <div style={styles.hospitalIconBox}>🏥</div>
           <div>
             <p style={styles.hospitalName}>{hospital.name}</p>
@@ -481,17 +481,17 @@ export default function Payment() {
           </div>
 
           {form.amount && (
-            <div style={styles.fxBox}>
+            <div style={styles.fxBox} className="mr-fx-box">
               <div style={styles.fxItem}>
                 <div style={styles.fxLabel}>USD equivalent</div>
                 <div style={styles.fxValue}>${(form.amount / fxRates.USD).toFixed(2)}</div>
               </div>
-              <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} />
+              <div className="mr-fx-divider" style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} />
               <div style={styles.fxItem}>
                 <div style={styles.fxLabel}>GBP equivalent</div>
                 <div style={styles.fxValue}>£{(form.amount / fxRates.GBP).toFixed(2)}</div>
               </div>
-              <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} />
+              <div className="mr-fx-divider" style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} />
               <div style={styles.fxItem}>
                 <div style={styles.fxLabel}>You pay</div>
                 <div style={styles.fxValue}>{formattedAmount}</div>
@@ -499,7 +499,7 @@ export default function Payment() {
             </div>
           )}
           {form.amount && form.patientName && form.treatment && (
-            <div style={styles.summaryCard}>
+            <div style={styles.summaryCard} className="mr-summary-card">
               <div style={styles.summaryTitle}>📋 Payment Summary</div>
               <div style={styles.summaryRow}>
                 <span style={styles.summaryLabel}>Hospital</span>
