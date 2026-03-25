@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom'
 
@@ -94,7 +94,6 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '0.5rem',
-    animation: 'slideDown 0.3s ease',
   },
   label: {
     display: 'block',
@@ -132,6 +131,29 @@ const styles = {
   inputFocus: {
     borderColor: '#00d084',
     boxShadow: '0 0 0 3px rgba(0, 208, 132, 0.15)',
+  },
+  fxBox: {
+    background: 'rgba(0, 208, 132, 0.08)',
+    border: '1px solid rgba(0, 208, 132, 0.2)',
+    borderRadius: '10px',
+    padding: '0.75rem 1rem',
+    marginBottom: '1.4rem',
+    display: 'flex',
+    justifyContent: 'space-around',
+    gap: '1rem',
+  },
+  fxItem: {
+    textAlign: 'center',
+  },
+  fxLabel: {
+    color: 'rgba(255,255,255,0.5)',
+    fontSize: '0.75rem',
+    marginBottom: '0.2rem',
+  },
+  fxValue: {
+    color: '#00d084',
+    fontWeight: 700,
+    fontSize: '0.95rem',
   },
   amountPreview: {
     color: 'rgba(255, 255, 255, 0.6)',
@@ -182,14 +204,26 @@ export default function Payment() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [focused, setFocused] = useState('')
+  const [fxRates, setFxRates] = useState({ USD: 1650, GBP: 2100 })
   const user = JSON.parse(localStorage.getItem('user') || '{}')
   const token = localStorage.getItem('token')
+
+  useEffect(() => {
+    fetch('https://api.exchangerate-api.com/v4/latest/NGN')
+      .then(res => res.json())
+      .then(data => {
+        setFxRates({
+          USD: (1 / data.rates.USD).toFixed(2),
+          GBP: (1 / data.rates.GBP).toFixed(2)
+        })
+      })
+      .catch(() => setFxRates({ USD: 1650, GBP: 2100 }))
+  }, [])
 
   const handlePay = async (e) => {
     e.preventDefault()
     setLoading(true)
     try {
-      // Save transaction
       const transactionRef = `MEDIREMIT-${Date.now()}`
       await axios.post(`${API}/transactions`, {
         hospitalId: hospital.id,
@@ -201,7 +235,6 @@ export default function Payment() {
         headers: { Authorization: `Bearer ${token}` }
       })
 
-      // Get checkout data
       const res = await axios.post(`${API}/checkout/pay`, {
         amount: form.amount,
         email: user.email,
@@ -210,7 +243,6 @@ export default function Payment() {
         hospitalId: hospital.id
       })
 
-      // Redirect to Interswitch checkout
       const { checkoutUrl, checkoutData } = res.data
       const params = new URLSearchParams({
         merchantCode: checkoutData.merchantCode,
@@ -240,8 +272,8 @@ export default function Payment() {
     : '₦0'
 
   return (
-    <div style={styles.page} className="responsive-page-center">
-      <div style={styles.card} className="responsive-card">
+    <div style={styles.page}>
+      <div style={styles.card}>
         <button
           onClick={() => navigate('/hospitals')}
           style={styles.backBtn}
@@ -253,8 +285,7 @@ export default function Payment() {
 
         <h2 style={styles.title}>Make Payment</h2>
 
-        {/* Hospital Info Box */}
-        <div style={styles.hospitalBox} className="responsive-hospital-box">
+        <div style={styles.hospitalBox}>
           <div style={styles.hospitalIconBox}>🏥</div>
           <div>
             <p style={styles.hospitalName}>{hospital.name}</p>
@@ -307,10 +338,24 @@ export default function Payment() {
               min="100"
             />
           </div>
+
           {form.amount && (
-            <p style={styles.amountPreview}>
-              You will be charged <strong style={{ color: '#00d084' }}>{formattedAmount}</strong>
-            </p>
+            <div style={styles.fxBox}>
+              <div style={styles.fxItem}>
+                <div style={styles.fxLabel}>USD equivalent</div>
+                <div style={styles.fxValue}>${(form.amount / fxRates.USD).toFixed(2)}</div>
+              </div>
+              <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} />
+              <div style={styles.fxItem}>
+                <div style={styles.fxLabel}>GBP equivalent</div>
+                <div style={styles.fxValue}>£{(form.amount / fxRates.GBP).toFixed(2)}</div>
+              </div>
+              <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} />
+              <div style={styles.fxItem}>
+                <div style={styles.fxLabel}>You pay</div>
+                <div style={styles.fxValue}>{formattedAmount}</div>
+              </div>
+            </div>
           )}
 
           <button
@@ -331,11 +376,7 @@ export default function Payment() {
               e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 208, 132, 0.2)'
             }}
           >
-            {loading ? (
-              <>⏳ Processing...</>
-            ) : (
-              <>🔒 Pay {formattedAmount}</>
-            )}
+            {loading ? <>⏳ Processing...</> : <>🔒 Pay {formattedAmount}</>}
           </button>
         </form>
 
