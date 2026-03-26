@@ -227,7 +227,9 @@ BASE_URL=https://mediremit-backend.onrender.com
 | Name | Role |
 |---|---|
 | **Hillary Chukwuma Prince** | Backend Lead & Full Stack — Architecture, Interswitch API integration, frontend UI/UX, database design, deployment |
-
+|---|---|
+| **Samson Chimaraoke** | Technical Advisor & Architectural Designer |
+|---|---|
 ---
 
 ## 🏆 Built For
