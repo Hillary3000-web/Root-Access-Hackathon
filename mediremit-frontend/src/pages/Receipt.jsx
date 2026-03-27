@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import axios from 'axios'
 
-const API = 'https://mediremit-backend.onrender.com'
+const API = import.meta.env.VITE_API_URL || 'https://mediremit-backend.onrender.com'
 
 export default function Receipt() {
   const [searchParams] = useSearchParams()
@@ -19,7 +19,10 @@ export default function Receipt() {
   useEffect(() => {
     if (txnref) {
       const status = success ? 'successful' : 'failed'
-      axios.patch(`${API}/transactions/${txnref}/status`, { status })
+      axios.patch(`${API}/transactions/${txnref}/status`, { 
+        status,
+        simulatorSecret: 'mock-interswitch-secret-123'
+      })
         .finally(() => setUpdating(false))
     } else {
       setUpdating(false)

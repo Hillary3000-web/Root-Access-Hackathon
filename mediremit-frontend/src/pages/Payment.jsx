@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom'
 
-const API = 'https://mediremit-backend.onrender.com'
+const API = import.meta.env.VITE_API_URL || 'https://mediremit-backend.onrender.com'
 
 const styles = {
   page: {
@@ -291,7 +291,7 @@ export default function Payment() {
   const { state } = useLocation()
   const hospital = state?.hospital
   const navigate = useNavigate()
-  const [form, setForm] = useState({ patientName: '', amount: '', treatment: '', note: '' })
+  const [form, setForm] = useState({ patientName: '', patientId: '', amount: '', treatment: '', note: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [focused, setFocused] = useState('')
@@ -311,6 +311,11 @@ export default function Payment() {
       .catch(() => setFxRates({ USD: 1650, GBP: 2100 }))
   }, [])
 
+  const [showLinkModal, setShowLinkModal] = useState(false)
+  const [generatedLink, setGeneratedLink] = useState('')
+  const [linkLoading, setLinkLoading] = useState(false)
+  const [linkCopied, setLinkCopied] = useState(false)
+
   const handlePay = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -319,6 +324,7 @@ export default function Payment() {
       await axios.post(`${API}/transactions`, {
         hospitalId: hospital.id,
         patientName: form.patientName,
+        patientId: form.patientId,
         amount: form.amount,
         transactionRef,
         description: `Payment for ${form.patientName} at ${hospital.name}`
@@ -326,31 +332,58 @@ export default function Payment() {
         headers: { Authorization: `Bearer ${token}` }
       })
 
-      const res = await axios.post(`${API}/checkout/pay`, {
-        amount: form.amount,
-        email: user.email,
-        hospitalName: hospital.name,
-        patientName: form.patientName,
-        hospitalId: hospital.id
+      // Redirect to realistic payment simulator
+      navigate('/payment-gateway', {
+        state: {
+          paymentInfo: {
+            amount: form.amount,
+            hospitalName: hospital.name,
+            patientName: form.patientName,
+            hospitalId: hospital.id,
+            email: user.email,
+            transactionRef,
+          }
+        }
       })
-
-      const { checkoutUrl, checkoutData } = res.data
-      const params = new URLSearchParams({
-        merchantCode: checkoutData.merchantCode,
-        payableCode: checkoutData.payableCode,
-        amount: checkoutData.amount,
-        transactionReference: checkoutData.transactionReference,
-        customerId: checkoutData.customerId,
-        customerEmail: checkoutData.customerEmail,
-        currency: checkoutData.currency,
-        redirectUrl: checkoutData.redirectUrl,
-      })
-
-      window.location.href = `${checkoutUrl}?${params.toString()}`
     } catch (err) {
       setError(err.response?.data?.message || 'Payment failed')
       setLoading(false)
     }
+  }
+
+  const handleGenerateLink = async () => {
+    if (!form.patientName || !form.amount || !form.treatment) {
+      setError('Please fill in Patient Name, Treatment Category, and Amount to generate a link.')
+      return
+    }
+    setLinkLoading(true)
+    setError('')
+    try {
+      const res = await axios.post(`${API}/paylink/create`, {
+        hospitalId: hospital.id,
+        hospitalName: hospital.name,
+        hospitalLocation: hospital.location,
+        patientName: form.patientName,
+        patientId: form.patientId,
+        treatment: form.treatment,
+        amount: form.amount,
+        note: form.note,
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      setGeneratedLink(res.data.paymentUrl)
+      setShowLinkModal(true)
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to generate link')
+    } finally {
+      setLinkLoading(false)
+    }
+  }
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(generatedLink)
+    setLinkCopied(true)
+    setTimeout(() => setLinkCopied(false), 2000)
   }
 
   if (!hospital) {
@@ -415,6 +448,23 @@ export default function Payment() {
                 ...(focused === 'patientName' ? styles.inputFocus : {}),
               }}
               required
+            />
+          </div>
+
+          <label style={styles.label}>Patient ID / Hospital Number <span style={{ color: 'rgba(255,255,255,0.3)', fontWeight: 400 }}>(optional)</span></label>
+          <div style={styles.inputWrapper}>
+            <span style={styles.inputIcon}>🆔</span>
+            <input
+              type="text"
+              placeholder="e.g. HOS-2024-0012"
+              value={form.patientId}
+              onFocus={() => setFocused('patientId')}
+              onBlur={() => setFocused('')}
+              onChange={e => setForm({...form, patientId: e.target.value})}
+              style={{
+                ...styles.input,
+                ...(focused === 'patientId' ? styles.inputFocus : {}),
+              }}
             />
           </div>
 
@@ -509,6 +559,12 @@ export default function Payment() {
                 <span style={styles.summaryLabel}>Patient</span>
                 <span style={styles.summaryValue}>{form.patientName}</span>
               </div>
+              {form.patientId && (
+                <div style={styles.summaryRow}>
+                  <span style={styles.summaryLabel}>Patient ID</span>
+                  <span style={styles.summaryValue}>{form.patientId}</span>
+                </div>
+              )}
               <div style={styles.summaryRow}>
                 <span style={styles.summaryLabel}>Treatment</span>
                 <span style={styles.summaryValue}>{form.treatment}</span>
@@ -548,11 +604,162 @@ export default function Payment() {
           >
             {loading ? <>⏳ Processing...</> : <>🔒 Pay {formattedAmount}</>}
           </button>
+
+          {/* Generate Payment Link Button */}
+          <button
+            type="button"
+            onClick={handleGenerateLink}
+            disabled={linkLoading}
+            style={{
+              width: '100%',
+              padding: '0.85rem',
+              background: 'transparent',
+              color: '#00d084',
+              border: '1px solid rgba(0, 208, 132, 0.3)',
+              borderRadius: '12px',
+              fontSize: '0.92rem',
+              fontWeight: 600,
+              fontFamily: "'Inter', sans-serif",
+              cursor: linkLoading ? 'not-allowed' : 'pointer',
+              transition: 'all 0.2s ease',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              marginTop: '0.75rem',
+              opacity: linkLoading ? 0.7 : 1,
+            }}
+            onMouseEnter={e => {
+              if (!linkLoading) {
+                e.currentTarget.style.background = 'rgba(0, 208, 132, 0.08)'
+                e.currentTarget.style.borderColor = 'rgba(0, 208, 132, 0.5)'
+              }
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.borderColor = 'rgba(0, 208, 132, 0.3)'
+            }}
+          >
+            {linkLoading ? '⏳ Generating...' : '🔗 Generate Payment Link for Family'}
+          </button>
         </form>
 
         <div style={styles.securityNote}>
           <span>🛡️</span> Secured by Interswitch payment gateway
         </div>
+
+        {/* Payment Link Modal */}
+        {showLinkModal && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0,0,0,0.7)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '1rem',
+          }}>
+            <div style={{
+              background: '#1a2035',
+              borderRadius: '20px',
+              padding: '2rem',
+              maxWidth: '440px',
+              width: '100%',
+              border: '1px solid rgba(0, 208, 132, 0.2)',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+              animation: 'fadeInUp 0.3s ease',
+            }}>
+              <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>🔗</div>
+                <h3 style={{ color: '#ffffff', fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>
+                  Payment Link Created!
+                </h3>
+                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', margin: '0.5rem 0 0' }}>
+                  Share this link with family to pay for {form.patientName}
+                </p>
+              </div>
+
+              <div style={{
+                background: 'rgba(0, 208, 132, 0.06)',
+                border: '1px solid rgba(0, 208, 132, 0.15)',
+                borderRadius: '12px',
+                padding: '1rem',
+                marginBottom: '1rem',
+                wordBreak: 'break-all',
+              }}>
+                <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)', marginBottom: '0.3rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  Payment Link
+                </div>
+                <div style={{ fontSize: '0.85rem', color: '#00d084', fontWeight: 600 }}>
+                  {generatedLink}
+                </div>
+              </div>
+
+              <div style={{
+                background: 'rgba(255,255,255,0.03)',
+                borderRadius: '10px',
+                padding: '0.8rem 1rem',
+                marginBottom: '1.5rem',
+                border: '1px solid rgba(255,255,255,0.05)',
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                  <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.8rem' }}>Hospital</span>
+                  <span style={{ color: '#fff', fontSize: '0.8rem', fontWeight: 600 }}>{hospital.name}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                  <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.8rem' }}>Amount</span>
+                  <span style={{ color: '#00d084', fontSize: '0.8rem', fontWeight: 700 }}>{formattedAmount}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.8rem' }}>Treatment</span>
+                  <span style={{ color: '#fff', fontSize: '0.8rem', fontWeight: 600 }}>{form.treatment}</span>
+                </div>
+              </div>
+
+              <button
+                onClick={copyLink}
+                style={{
+                  width: '100%',
+                  padding: '0.9rem',
+                  background: linkCopied ? '#00b975' : '#00d084',
+                  color: '#0a0f1e',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontSize: '0.95rem',
+                  fontWeight: 700,
+                  fontFamily: "'Inter', sans-serif",
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  marginBottom: '0.5rem',
+                }}
+              >
+                {linkCopied ? '✅ Copied!' : '📋 Copy Link'}
+              </button>
+
+              <button
+                onClick={() => setShowLinkModal(false)}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  background: 'transparent',
+                  color: 'rgba(255,255,255,0.5)',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '0.85rem',
+                  fontFamily: "'Inter', sans-serif",
+                  cursor: 'pointer',
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

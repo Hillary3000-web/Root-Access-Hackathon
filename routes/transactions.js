@@ -21,7 +21,7 @@ function authMiddleware(req, res, next) {
 // Save transaction
 router.post('/', authMiddleware, async (req, res) => {
   try {
-    const { hospitalId, patientName, amount, transactionRef, description } = req.body;
+    const { hospitalId, patientName, patientId, amount, transactionRef, description } = req.body;
 
     const { data, error } = await supabase
       .from('transactions')
@@ -29,6 +29,7 @@ router.post('/', authMiddleware, async (req, res) => {
         user_id: req.user.id,
         hospital_id: hospitalId,
         patient_name: patientName,
+        patient_id: patientId || null,
         amount,
         transaction_ref: transactionRef,
         description,
@@ -65,7 +66,12 @@ router.get('/', authMiddleware, async (req, res) => {
 // Update transaction status (callback)
 router.patch('/:ref/status', async (req, res) => {
   try {
-    const { status } = req.body;
+    const { status, simulatorSecret } = req.body;
+
+    // Mock webhook signature verification to prevent unauthorized updates
+    if (simulatorSecret !== 'mock-interswitch-secret-123') {
+      return res.status(401).json({ success: false, message: 'Invalid webhook signature' });
+    }
 
     const { data, error } = await supabase
       .from('transactions')

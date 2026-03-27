@@ -2,7 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate, Link } from 'react-router-dom'
 
-const API = 'https://mediremit-backend.onrender.com'
+const API = import.meta.env.VITE_API_URL || 'https://mediremit-backend.onrender.com'
 
 const styles = {
   page: {

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
-const API = 'https://mediremit-backend.onrender.com'
+const API = import.meta.env.VITE_API_URL || 'https://mediremit-backend.onrender.com'
 
 const statusConfig = {
   successful: {
@@ -393,7 +393,9 @@ export default function Transactions() {
                   style={{
                     ...styles.txCard,
                     animation: `fadeInUp 0.35s ease ${i * 0.05}s both`,
+                    cursor: 'pointer',
                   }}
+                  onClick={() => navigate(`/transactions/${t.id}`, { state: { transaction: t } })}
                   onMouseEnter={e => {
                     e.currentTarget.style.transform = 'translateY(-2px)'
                     e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.3)'
@@ -429,6 +431,9 @@ export default function Transactions() {
                     }}>
                       {s.icon} {s.label}
                     </span>
+                    <p style={{ margin: '0.3rem 0 0', fontSize: '0.72rem', color: 'rgba(255,255,255,0.35)' }}>
+                      View details →
+                    </p>
                   </div>
                 </div>
               )
