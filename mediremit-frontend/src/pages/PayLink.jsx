@@ -90,19 +90,37 @@ export default function PayLink() {
     if (!email) return
     setPaying(true)
     try {
-      const res = await axios.post(`${API}/paylink/${linkId}/pay`, { email })
-      // Redirect to payment simulator
-      navigate('/payment-gateway', {
-        state: {
-          paymentInfo: {
-            amount: res.data.amount,
-            hospitalName: res.data.hospitalName,
-            patientName: res.data.patientName,
-            email,
-            transactionRef: res.data.transactionRef,
-          }
-        }
+      // 1. Create the transaction via link
+      const txRes = await axios.post(`${API}/paylink/${linkId}/pay`, { email })
+      const { transactionRef, amount, hospitalName, patientName } = txRes.data
+
+      // 2. Get Interswitch payload
+      const checkoutRes = await axios.post(`${API}/checkout/pay`, {
+        amount,
+        email,
+        hospitalName,
+        patientName,
+        transactionRef,
+        origin: window.location.origin
       })
+
+      const { checkoutUrl, checkoutData } = checkoutRes.data;
+
+      // 3. Dynamically submit to Interswitch
+      const checkoutForm = document.createElement("form");
+      checkoutForm.method = "POST";
+      checkoutForm.action = checkoutUrl;
+
+      Object.keys(checkoutData).forEach(key => {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = checkoutData[key];
+        checkoutForm.appendChild(input);
+      });
+
+      document.body.appendChild(checkoutForm);
+      checkoutForm.submit();
     } catch (err) {
       setError(err.response?.data?.message || 'Payment failed')
       setPaying(false)

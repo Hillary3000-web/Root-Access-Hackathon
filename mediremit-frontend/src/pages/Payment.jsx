@@ -291,7 +291,7 @@ export default function Payment() {
   const { state } = useLocation()
   const hospital = state?.hospital
   const navigate = useNavigate()
-  const [form, setForm] = useState({ patientName: '', patientId: '', amount: '', treatment: '', note: '' })
+  const [form, setForm] = useState({ patientName: '', treatment: '', amount: '', note: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [focused, setFocused] = useState('')
@@ -321,30 +321,42 @@ export default function Payment() {
     setLoading(true)
     try {
       const transactionRef = `MEDIREMIT-${Date.now()}`
+      // 1. Create pending transaction
       await axios.post(`${API}/transactions`, {
         hospitalId: hospital.id,
         patientName: form.patientName,
-        patientId: form.patientId,
         amount: form.amount,
         transactionRef,
-        description: `Payment for ${form.patientName} at ${hospital.name}`
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
+        description: `Payment for ${form.patientName} at ${hospital.name}`,
+      }, { headers: { Authorization: `Bearer ${token}` } })
+
+      // 2. Get Interswitch payload
+      const checkoutRes = await axios.post(`${API}/checkout/pay`, {
+        amount: form.amount,
+        email: user.email,
+        hospitalName: hospital.name,
+        patientName: form.patientName,
+        transactionRef,
+        origin: window.location.origin
       })
 
-      // Redirect to realistic payment simulator
-      navigate('/payment-gateway', {
-        state: {
-          paymentInfo: {
-            amount: form.amount,
-            hospitalName: hospital.name,
-            patientName: form.patientName,
-            hospitalId: hospital.id,
-            email: user.email,
-            transactionRef,
-          }
-        }
-      })
+      const { checkoutUrl, checkoutData } = checkoutRes.data;
+
+      // 3. Dynamically submit to Interswitch
+      const checkoutForm = document.createElement("form");
+      checkoutForm.method = "POST";
+      checkoutForm.action = checkoutUrl;
+
+      Object.keys(checkoutData).forEach(key => {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = checkoutData[key];
+        checkoutForm.appendChild(input);
+      });
+
+      document.body.appendChild(checkoutForm);
+      checkoutForm.submit();
     } catch (err) {
       setError(err.response?.data?.message || 'Payment failed')
       setLoading(false)
@@ -364,7 +376,6 @@ export default function Payment() {
         hospitalName: hospital.name,
         hospitalLocation: hospital.location,
         patientName: form.patientName,
-        patientId: form.patientId,
         treatment: form.treatment,
         amount: form.amount,
         note: form.note,
@@ -439,37 +450,15 @@ export default function Payment() {
             <span style={styles.inputIcon}>👤</span>
             <input
               type="text"
-              placeholder="Enter patient's full name"
+              placeholder="e.g. John Doe"
               value={form.patientName}
-              onFocus={() => setFocused('patientName')}
-              onBlur={() => setFocused('')}
               onChange={e => setForm({...form, patientName: e.target.value})}
-              style={{
-                ...styles.input,
-                ...(focused === 'patientName' ? styles.inputFocus : {}),
-              }}
+              style={styles.input}
               required
             />
           </div>
 
-          <label style={styles.label}>Patient ID / Hospital Number <span style={{ color: 'rgba(255,255,255,0.3)', fontWeight: 400 }}>(optional)</span></label>
-          <div style={styles.inputWrapper}>
-            <span style={styles.inputIcon}>🆔</span>
-            <input
-              type="text"
-              placeholder="e.g. HOS-2024-0012"
-              value={form.patientId}
-              onFocus={() => setFocused('patientId')}
-              onBlur={() => setFocused('')}
-              onChange={e => setForm({...form, patientId: e.target.value})}
-              style={{
-                ...styles.input,
-                ...(focused === 'patientId' ? styles.inputFocus : {}),
-              }}
-            />
-          </div>
-
-          <label style={styles.label}>Treatment Category</label>
+          <label style={styles.label}>Treatment / Category</label>
           <div style={styles.inputWrapper}>
             <span style={styles.inputIcon}>💊</span>
             <select
@@ -558,14 +547,8 @@ export default function Payment() {
               </div>
               <div style={styles.summaryRow}>
                 <span style={styles.summaryLabel}>Patient</span>
-                <span style={styles.summaryValue}>{form.patientName}</span>
+                <span style={styles.summaryValue}>{form.patientName || '—'}</span>
               </div>
-              {form.patientId && (
-                <div style={styles.summaryRow}>
-                  <span style={styles.summaryLabel}>Patient ID</span>
-                  <span style={styles.summaryValue}>{form.patientId}</span>
-                </div>
-              )}
               <div style={styles.summaryRow}>
                 <span style={styles.summaryLabel}>Treatment</span>
                 <span style={styles.summaryValue}>{form.treatment}</span>

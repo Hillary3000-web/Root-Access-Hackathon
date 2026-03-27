@@ -27,7 +27,7 @@ function generateLinkId() {
 // Create payment link (authenticated)
 router.post('/create', authMiddleware, async (req, res) => {
   try {
-    const { hospitalId, hospitalName, hospitalLocation, patientName, patientId, treatment, amount, note, origin } = req.body;
+    const { hospitalId, hospitalName, hospitalLocation, patientName, treatment, amount, note, origin } = req.body;
 
     if (!hospitalId || !patientName || !amount || !treatment) {
       return res.status(400).json({ success: false, message: 'Missing required fields' });
@@ -43,7 +43,7 @@ router.post('/create', authMiddleware, async (req, res) => {
         hospital_name: hospitalName,
         hospital_location: hospitalLocation,
         patient_name: patientName,
-        patient_id: patientId || null,
+        patient_id: req.user.id, // Automatically uniquely identify the sponsor
         treatment,
         amount,
         note: note || null,
