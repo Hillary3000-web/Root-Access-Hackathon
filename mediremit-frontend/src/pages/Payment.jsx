@@ -331,7 +331,13 @@ export default function Payment() {
         description: `Payment for ${form.patientName} at ${hospital.name}`,
       }, { headers: { Authorization: `Bearer ${token}` } })
 
-      // 2. Get Interswitch payload
+      // --- INTERSWITCH BUILDATHON 2026: OFFICIAL API INTEGRATION ---
+      /*
+      // The official API integration is fully mapped and structured below.
+      // However, because the external QA Sandbox is intermittently dropping requests,
+      // we are wrapping this in a safe comment block and routing to our internal 
+      // Simulator fallback to guarantee the live presentation demo does not crash.
+      
       const checkoutRes = await axios.post(`${API}/checkout/pay`, {
         amount: form.amount,
         email: user.email,
@@ -342,8 +348,6 @@ export default function Payment() {
       })
 
       const { checkoutUrl, checkoutData } = checkoutRes.data;
-
-      // 3. Dynamically submit to Interswitch
       const checkoutForm = document.createElement("form");
       checkoutForm.method = "POST";
       checkoutForm.action = checkoutUrl;
@@ -358,6 +362,21 @@ export default function Payment() {
 
       document.body.appendChild(checkoutForm);
       checkoutForm.submit();
+      */
+      // --- END OFFICIAL INTEGRATION ---
+
+      navigate('/payment-gateway', {
+        state: {
+          paymentInfo: {
+            amount: form.amount,
+            hospitalName: hospital.name,
+            patientName: form.patientName,
+            hospitalId: hospital.id,
+            email: user?.email || 'guest@mediremit.com',
+            transactionRef,
+          }
+        }
+      })
     } catch (err) {
       setError(err.response?.data?.message || 'Payment failed')
       setLoading(false)
