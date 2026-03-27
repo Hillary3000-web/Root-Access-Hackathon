@@ -27,7 +27,7 @@ function generateLinkId() {
 // Create payment link (authenticated)
 router.post('/create', authMiddleware, async (req, res) => {
   try {
-    const { hospitalId, hospitalName, hospitalLocation, patientName, patientId, treatment, amount, note } = req.body;
+    const { hospitalId, hospitalName, hospitalLocation, patientName, patientId, treatment, amount, note, origin } = req.body;
 
     if (!hospitalId || !patientName || !amount || !treatment) {
       return res.status(400).json({ success: false, message: 'Missing required fields' });
@@ -55,7 +55,7 @@ router.post('/create', authMiddleware, async (req, res) => {
 
     if (error) throw error;
 
-    const baseUrl = process.env.FRONTEND_URL || 'https://mediremit.vercel.app';
+    const baseUrl = origin || process.env.FRONTEND_URL || 'https://mediremit.vercel.app';
     const paymentUrl = `${baseUrl}/pay/${linkId}`;
 
     res.json({

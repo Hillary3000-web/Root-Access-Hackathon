@@ -368,6 +368,7 @@ export default function Payment() {
         treatment: form.treatment,
         amount: form.amount,
         note: form.note,
+        origin: window.location.origin
       }, {
         headers: { Authorization: `Bearer ${token}` }
       })
