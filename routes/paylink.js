@@ -24,10 +24,10 @@ function generateLinkId() {
   return crypto.randomBytes(6).toString('hex'); // 12 chars
 }
 
-// Create payment link (authenticated)
-router.post('/create', authMiddleware, async (req, res) => {
+// Create payment link (public, no auth needed)
+router.post('/create', async (req, res) => {
   try {
-    const { hospitalId, hospitalName, hospitalLocation, patientName, treatment, amount, note, origin } = req.body;
+    const { hospitalId, hospitalName, hospitalLocation, patientName, patientId, treatment, amount, note, origin } = req.body;
 
     if (!hospitalId || !patientName || !amount || !treatment) {
       return res.status(400).json({ success: false, message: 'Missing required fields' });
@@ -43,12 +43,11 @@ router.post('/create', authMiddleware, async (req, res) => {
         hospital_name: hospitalName,
         hospital_location: hospitalLocation,
         patient_name: patientName,
-        patient_id: req.user.id, // Automatically uniquely identify the sponsor
+        patient_id: patientId || null,
         treatment,
         amount,
         note: note || null,
         status: 'active',
-        created_by: req.user.id,
       }])
       .select()
       .single();

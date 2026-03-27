@@ -29,7 +29,7 @@ router.post('/', authMiddleware, async (req, res) => {
         user_id: req.user.id,
         hospital_id: hospitalId,
         patient_name: patientName,
-        patient_id: req.user.id, // Automatically uniquely identify the sponsor for records
+        patient_id: patientId || null,
         amount,
         transaction_ref: transactionRef,
         description,

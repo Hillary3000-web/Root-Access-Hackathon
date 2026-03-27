@@ -291,7 +291,7 @@ export default function Payment() {
   const { state } = useLocation()
   const hospital = state?.hospital
   const navigate = useNavigate()
-  const [form, setForm] = useState({ patientName: '', treatment: '', amount: '', note: '' })
+  const [form, setForm] = useState({ patientName: '', patientId: '', treatment: '', amount: '', note: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [focused, setFocused] = useState('')
@@ -325,6 +325,7 @@ export default function Payment() {
       await axios.post(`${API}/transactions`, {
         hospitalId: hospital.id,
         patientName: form.patientName,
+        patientId: form.patientId || null,
         amount: form.amount,
         transactionRef,
         description: `Payment for ${form.patientName} at ${hospital.name}`,
@@ -376,6 +377,7 @@ export default function Payment() {
         hospitalName: hospital.name,
         hospitalLocation: hospital.location,
         patientName: form.patientName,
+        patientId: form.patientId || null,
         treatment: form.treatment,
         amount: form.amount,
         note: form.note,
@@ -452,7 +454,20 @@ export default function Payment() {
               type="text"
               placeholder="e.g. John Doe"
               value={form.patientName}
-              onChange={e => setForm({...form, patientName: e.target.value})}
+              onChange={e => setForm({ ...form, patientName: e.target.value })}
+              style={styles.input}
+              required
+            />
+          </div>
+
+          <label style={styles.label}>Patient Number / Hospital ID <span style={{ color: 'rgba(255,255,255,0.3)', fontWeight: 400 }}>(Required)</span></label>
+          <div style={styles.inputWrapper}>
+            <span style={styles.inputIcon}>🆔</span>
+            <input
+              type="text"
+              placeholder="e.g. LUTH-2023-891"
+              value={form.patientId}
+              onChange={e => setForm({...form, patientId: e.target.value})}
               style={styles.input}
               required
             />
@@ -465,7 +480,7 @@ export default function Payment() {
               value={form.treatment}
               onFocus={() => setFocused('treatment')}
               onBlur={() => setFocused('')}
-              onChange={e => setForm({...form, treatment: e.target.value})}
+              onChange={e => setForm({ ...form, treatment: e.target.value })}
               style={{
                 ...styles.select,
                 ...(focused === 'treatment' ? styles.inputFocus : {}),
@@ -485,14 +500,14 @@ export default function Payment() {
 
           <label style={styles.label}>Note <span style={{ color: 'rgba(255,255,255,0.3)', fontWeight: 400 }}>(optional)</span></label>
           <div style={styles.inputWrapper}>
-            <span style={{...styles.inputIcon, top: '20px', transform: 'none'}}>📝</span>
+            <span style={{ ...styles.inputIcon, top: '20px', transform: 'none' }}>📝</span>
             <textarea
               placeholder="Add a note (optional) e.g. for mum's knee surgery"
               value={form.note}
               maxLength={200}
               onFocus={() => setFocused('note')}
               onBlur={() => setFocused('')}
-              onChange={e => setForm({...form, note: e.target.value})}
+              onChange={e => setForm({ ...form, note: e.target.value })}
               style={{
                 ...styles.textarea,
                 ...(focused === 'note' ? styles.inputFocus : {}),
@@ -510,7 +525,7 @@ export default function Payment() {
               value={form.amount}
               onFocus={() => setFocused('amount')}
               onBlur={() => setFocused('')}
-              onChange={e => setForm({...form, amount: e.target.value})}
+              onChange={e => setForm({ ...form, amount: e.target.value })}
               style={{
                 ...styles.input,
                 ...(focused === 'amount' ? styles.inputFocus : {}),
@@ -550,18 +565,22 @@ export default function Payment() {
                 <span style={styles.summaryValue}>{form.patientName || '—'}</span>
               </div>
               <div style={styles.summaryRow}>
+                <span style={styles.summaryLabel}>Patient ID</span>
+                <span style={styles.summaryValue}>{form.patientId || '—'}</span>
+              </div>
+              <div style={styles.summaryRow}>
                 <span style={styles.summaryLabel}>Treatment</span>
                 <span style={styles.summaryValue}>{form.treatment}</span>
               </div>
               <div style={styles.summaryRow}>
                 <span style={styles.summaryLabel}>Amount (NGN)</span>
-                <span style={{...styles.summaryValue, color: '#00d084', fontWeight: 700}}>{formattedAmount}</span>
+                <span style={{ ...styles.summaryValue, color: '#00d084', fontWeight: 700 }}>{formattedAmount}</span>
               </div>
               <div style={styles.summaryRow}>
                 <span style={styles.summaryLabel}>USD equivalent</span>
                 <span style={styles.summaryValue}>${(form.amount / fxRates.USD).toFixed(2)}</span>
               </div>
-              <div style={{...styles.summaryRow, borderBottom: 'none'}}>
+              <div style={{ ...styles.summaryRow, borderBottom: 'none' }}>
                 <span style={styles.summaryLabel}>GBP equivalent</span>
                 <span style={styles.summaryValue}>£{(form.amount / fxRates.GBP).toFixed(2)}</span>
               </div>

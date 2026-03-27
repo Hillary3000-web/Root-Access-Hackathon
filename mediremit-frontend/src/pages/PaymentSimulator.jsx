@@ -631,7 +631,7 @@ export default function PaymentSimulator() {
                 Please enter your 4-digit card PIN to authorize this transaction
               </p>
               <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', marginBottom: '1.5rem' }}>
-                {[0,1,2,3].map(i => (
+                {[0, 1, 2, 3].map(i => (
                   <div key={i} style={{
                     width: '48px',
                     height: '52px',
@@ -664,7 +664,7 @@ export default function PaymentSimulator() {
               />
               {/* Number pad */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem', maxWidth: '220px', margin: '0 auto' }}>
-                {[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map((num, i) => (
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, '⌫'].map((num, i) => (
                   <button
                     key={i}
                     onClick={() => {
@@ -719,7 +719,7 @@ export default function PaymentSimulator() {
                 A 6-digit OTP has been sent to your registered phone number ****1234
               </p>
               <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', marginBottom: '1.5rem' }}>
-                {[0,1,2,3,4,5].map(i => (
+                {[0, 1, 2, 3, 4, 5].map(i => (
                   <div key={i} style={{
                     width: '40px',
                     height: '46px',
